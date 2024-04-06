@@ -12,5 +12,5 @@
     </padding>
     <Label text="Enter Your Username:"/>
     <TextField fx:id="usernameTextField" promptText="Username"/>
-    <Button text="Submit" onAction="#handleSubmitAction"/>
+    <Button text="Submit" onAction="#submitUserName"/>
 </VBox>

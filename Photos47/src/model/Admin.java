@@ -13,11 +13,15 @@ public class Admin implements Serializable {
     public Map<String, User> getUsers(){
         return users;
     }
+    public boolean userExists(String username){
+        if(users.containsKey(username)) return true;
+        return false;
+    }
     public void addUser(User user){
         users.put(user.getUsername(), user);
     }
-    public void removeUser(User user){
-        if(users.containsKey(user.getUsername()))
-            users.remove(user.getUsername());
+    public void removeUser(String username){
+        if(users.containsKey(username))
+            users.remove(username);
     }
 }

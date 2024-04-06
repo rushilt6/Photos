@@ -10,7 +10,7 @@ public class MainViewController {
     private TextField usernameTextField;
 
     @FXML
-    protected void handleSubmitAction() {
+    protected void submitUserName() {
         String username = usernameTextField.getText();
         System.out.println("Username entered: " + username);
     }
