@@ -1,4 +1,4 @@
-package model;
+package src.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -39,7 +39,8 @@ public class Photo implements Serializable {
         tags.add(tag);
     }
     public void removeTag(Tag tag){
-        tags.remove(tag);
+        if(tags.contains(tag))
+            tags.remove(tag);
     }
 
     public boolean equals(Object o){
@@ -47,5 +48,8 @@ public class Photo implements Serializable {
         if(o == null || (!(o instanceof Tag))) return false;
         Photo other = (Photo) o;
         return filePath.equals(other.getPath());
+    }
+    public String toString() {
+        return "Photo{" + "filePath='" + filePath + '\'' + ", caption='" + caption + '\'' + ", dateOfPhoto=" + date + ", tags=" + tags + '}';
     }
 }
