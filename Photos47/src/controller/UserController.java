@@ -70,6 +70,8 @@ public class UserController
     @FXML
     private TextField tagNameField2, tagValueField2;
     @FXML
+    private TextField andOr;
+    @FXML
     private TextField customTagNameField, customTagValueField;
     @FXML
     private TextField startDateField, endDateField;
@@ -302,7 +304,7 @@ public class UserController
         newNameAlbumText.clear();
     }
     @FXML
-   private void onSearchPhoto(){
+    private void onSearchPhoto(){
        String tag1 = searchTagsComboBox1.getSelectionModel().getSelectedItem();
        String tag2 = searchTagsComboBox2.getSelectionModel().getSelectedItem();
        String tagName1 = tagNameField1.getText();
@@ -311,15 +313,88 @@ public class UserController
        String tagValue2 = tagValueField2.getText();
        String beginDate = startDateField.getText();
        String endingDate = endDateField.getText();
+       String conjunction = andOr.getText();
        if(tag1 != null) tagName1 = tag1;
        if(tag2 != null) tagName2 = tag2;
-      
-
-
        Set<Photo> photos = user.getPhotos();
+       List<Photo> selectedPhotos = new ArrayList<>();
+       
+       System.out.println(photos.size());
+       if(!tagName1.equals("") && !tagValue1.equals("") && !tagName2.equals("") && !tagValue2.equals(""))
+       {
+            for(Photo p : photos)
+            {
+                if(conjunction.equalsIgnoreCase("and"))
+                {
+                    boolean hasTag1 = false;
+                    boolean hasTag2 = false;
+                    System.out.println("WE HERE");
+                    for(Tag t : p.getTags())
+                    {
+                        if(t.getName().equalsIgnoreCase(tagName1) && t.getValue().equalsIgnoreCase(tagValue1))
+                        {
+                            hasTag1 = true;
+                        }
+                        else if(t.getName().equalsIgnoreCase(tagName2) && t.getValue().equalsIgnoreCase(tagValue2))
+                        {
+                            hasTag2 = true;
+                        }
+                        if(hasTag1 && hasTag2)
+                        {
+                            selectedPhotos.add(p);
+                            break; 
+                        }
+                    }
+                }
+                else if(conjunction.equalsIgnoreCase("or"))
+                {
+                    for(Tag t : p.getTags())
+                    {
+                        if(t.getName().equalsIgnoreCase(tagName1) && t.getValue().equalsIgnoreCase(tagValue1))
+                        {
+                            selectedPhotos.add(p);
+                        }
+                        if(t.getName().equalsIgnoreCase(tagName2) && t.getValue().equalsIgnoreCase(tagValue2))
+                        {
+                            selectedPhotos.add(p);
+                        }
+                    }
+                }
+            }
+            if(selectedPhotos.isEmpty())
+            {
+                CommonUtil.errorGUI("No Photos In Range!");
+            }
+            else
+            {
+               searchPhotos(selectedPhotos);
+            }
+       }
+       else if((!tagName1.equals("") && !tagValue1.equals("")) || (!tagName2.equals("") && !tagValue2.equals("")))
+       {
+            System.out.println("WE HERE BOYS");
+            for(Photo p : photos)
+            {
+                for(Tag t : p.getTags())
+                {
+                    if((!tagName1.equals("") && !tagValue1.equals("") && t.getName().equalsIgnoreCase(tagName1) && t.getValue().equalsIgnoreCase(tagValue1))
+                    || (!tagName2.equals("") && !tagValue2.equals("") && t.getName().equalsIgnoreCase(tagName2) && t.getValue().equalsIgnoreCase(tagValue2)))
+                    {
+                        selectedPhotos.add(p);
+                    }
+                }
+            }
+            if(selectedPhotos.isEmpty())
+            {
+                CommonUtil.errorGUI("No Photos In Range!");
+            }
+            else
+            {
+               searchPhotos(selectedPhotos);
+            }
+       }
        if(beginDate!=null && endingDate!=null)
        {
-            List<Photo> photosInRange = new ArrayList<>();
             LocalDate sd = LocalDate.parse(beginDate);
             LocalDate ed = LocalDate.parse(endingDate);
             for(Photo p : photos)
@@ -327,16 +402,16 @@ public class UserController
                 LocalDate photoDate = p.getDate();
                 if ((photoDate.isEqual(sd) || photoDate.isAfter(sd)) && (photoDate.isEqual(ed) || photoDate.isBefore(ed)))
                 {
-                    photosInRange.add(p); 
+                    selectedPhotos.add(p); 
                 }
             }
-            if(photosInRange.isEmpty())
+            if(selectedPhotos.isEmpty())
             {
                 CommonUtil.errorGUI("No Photos In Range!");
             }
             else
             {
-                searchPhotos(photosInRange);
+                searchPhotos(selectedPhotos);
             }
         }
        tagNameField1.clear();
@@ -345,6 +420,7 @@ public class UserController
        tagValueField2.clear();
        startDateField.clear();
        endDateField.clear();
+       andOr.clear();
 
    }
 
@@ -364,7 +440,9 @@ public class UserController
             CommonUtil.errorGUI("Couldn't open photos");
         }
    }
- 
+
+    
+
 
 
 }
