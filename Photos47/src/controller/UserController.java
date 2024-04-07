@@ -1,4 +1,5 @@
 package controller;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
@@ -15,7 +16,9 @@ import model.User;
 import util.DataUtil;
 
 import java.io.File;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,8 +27,6 @@ import java.util.*;
 
 public class UserController 
 {
-    private User user;
-    private VBox albumVBox;
     @FXML
     private TextField albumNameField;
     @FXML
@@ -37,16 +38,14 @@ public class UserController
     @FXML
     private Button addPhotoButton;
 
-    private List<Photo> addedPhotos;
-    
+    private List<Photo> addedPhotos = new ArrayList<>();;
+    private User user;
+    private File selectedFile;
 
-    public UserController(){
-        try{
-            this.user = (User)DataUtil.loadObjFromFile("data/user.ser");
-        }
-        catch(Exception e){
-            this.user = new User(user.getUsername());
-        }
+
+    @FXML
+    public void initialize(String username){
+        user = (User)DataUtil.loadObjFromFile("data/"+DataUtil.generateFilenameForUser(username));
     }
     @FXML
     public void displayAlbums() {
@@ -66,7 +65,6 @@ public class UserController
             
             albumInfoBox.getChildren().addAll(albumLabel, photoCountLabel, dateRangeLabel);
             
-            albumVBox.getChildren().add(albumInfoBox);
         }
     }
     private String calculateDateRange(Album album) 
@@ -117,27 +115,31 @@ public class UserController
 
     }
     @FXML
-    private File onChoosePhoto()
+    private void onChoosePhoto()
     {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose Picture");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
-        File selectedFile = fileChooser.showOpenDialog(new Stage());
-        return selectedFile;
+        selectedFile = fileChooser.showOpenDialog(new Stage());
+        
     }
     @FXML
-    private void onAddPhoto(File selectedFile)
+    private void onAddPhoto()
     {
         String caption = photoCaption.getText();
-        LocalDate currentDate = LocalDate.now();
-        if (selectedFile != null) 
+        long lastModifiedDate = selectedFile.lastModified();
+        LocalDate date = Instant.ofEpochMilli(lastModifiedDate)
+                                             .atZone(ZoneId.systemDefault())
+                                             .toLocalDate();
+        if (selectedFile != null && caption != null) 
         {
-            Photo photo = new Photo(selectedFile.getPath(), caption, currentDate);
+            Photo photo = new Photo(selectedFile.getPath(), caption, date);
             addedPhotos.add(photo);
         }
         photoCaption.clear();
+        selectedFile = null;
     }
 
 

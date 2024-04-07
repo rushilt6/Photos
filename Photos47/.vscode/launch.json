@@ -17,7 +17,7 @@
             "request": "launch",
             "mainClass": "Photos",
             "projectName": "Photos47_7883f48e",
-            "vmArgs": "--module-path ${workspaceFolder}/lib --add-modules javafx.controls,javafx.fxml"
+            "vmArgs": "--module-path ${workspaceFolder}/lib --add-modules javafx.controls,javafx.fxml --enable-preview"
         }
     ]
 }
