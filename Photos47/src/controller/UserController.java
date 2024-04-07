@@ -77,6 +77,8 @@ public class UserController
     private List<Photo> addedPhotos = new ArrayList<>();
     private User user;
     private File selectedFile;
+    private Set<Tag> tagList = new HashSet<>();
+
     @FXML
     private void logout() throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainView.fxml"));
@@ -180,10 +182,21 @@ public class UserController
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose Picture");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.jpeg"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
         selectedFile = fileChooser.showOpenDialog(new Stage());
         
+    }
+    @FXML
+    private void onAddTag(){
+        String presetTag = presetTagsComboBox.getSelectionModel().getSelectedItem();
+        String tagName = customTagNameField.getText();
+        String tagValue = customTagValueField.getText();
+        if(presetTag != null) tagName = presetTag;
+        if(tagName != null && tagValue !=null)
+            tagList.add(new Tag(tagName, tagValue));
+        customTagNameField.clear();
+        customTagValueField.clear();
     }
     @FXML
     private void onAddPhoto()
@@ -194,19 +207,16 @@ public class UserController
             LocalDate date = Instant.ofEpochMilli(lastModifiedDate)
                                                 .atZone(ZoneId.systemDefault())
                                                 .toLocalDate();
-            String presetTag = presetTagsComboBox.getSelectionModel().getSelectedItem();
-            String tagName = customTagNameField.getText();
-            String tagValue = customTagValueField.getText();
-            if(presetTag != null) tagName = presetTag;
-            if (selectedFile != null && caption != null && tagName != null && tagValue !=null) 
+            if (selectedFile != null && caption != null) 
             {
                 Photo photo = new Photo(selectedFile.getPath(), caption, date);
-                photo.addTag(new Tag(tagName,tagValue));
-                user.getPresetTags().add(tagName);
+                for(Tag t: tagList){
+                    photo.addTag(t);
+                    user.getPresetTags().add(t.getName());
+                }
+                tagList.clear();
                 addedPhotos.add(photo);
             }
-            customTagNameField.clear();
-            customTagValueField.clear();
             photoCaption.clear();
             selectedFile = null;
         }catch(Exception e){

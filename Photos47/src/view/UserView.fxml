@@ -38,6 +38,7 @@
                 <Button text="Clear Selection" onAction="#onClearSelection"/>
                 <TextField fx:id="customTagNameField" promptText="OR Tag name" />
                 <TextField fx:id="customTagValueField" promptText="Tag value" />
+                <Button text="Add Tag" onAction="#onAddTag" />
             </HBox>
             <HBox spacing="10">
                 <Button onAction="#onAddPhoto" text="Add Photo" />
