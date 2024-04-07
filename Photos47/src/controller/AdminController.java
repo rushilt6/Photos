@@ -1,4 +1,8 @@
 package controller;
+import java.io.File;
+import java.util.Map;
+
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
@@ -13,15 +17,18 @@ public class AdminController {
     private TextField addUser;
     @FXML
     private TextField deleteUser;
-    @FXML 
+    @FXML
     private ListView<String> listUsers;
 
+
     public AdminController(){
-        try{
+        File file = new File("data/admin.ser");
+        if(file.exists()){
             this.admin = (Admin)DataUtil.loadObjFromFile("data/admin.ser");
         }
-        catch(Exception e){
+        else{
             this.admin = new Admin();
+            DataUtil.saveObjToFile(admin, "data/admin.ser");
         }
     }
 
@@ -49,6 +56,9 @@ public class AdminController {
     @FXML
     private void onListUsers(){
         listUsers.getItems().clear();
+        for (Map.Entry<String,User> entry : admin.getUsers().entrySet()) {
+            listUsers.getItems().add(entry.getKey());
+        }
     }
 
 }

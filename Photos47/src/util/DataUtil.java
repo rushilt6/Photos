@@ -22,7 +22,7 @@ public class DataUtil {
         }
     }
     public static String generateFilenameForUser(String username) {
-        return username + "_data.ser";
+        return username + ".ser";
     }
     public static boolean deleteFile(String username){
         String filename = generateFilenameForUser(username);
