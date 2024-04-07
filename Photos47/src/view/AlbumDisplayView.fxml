@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -14,5 +15,15 @@
     <Button text="Copy Photo" onAction="#onCopyPhoto"/>
     <TextField fx:id="moveTextField" promptText="move to Album..."/>
     <Button text="Move Photo" onAction="#onMovePhoto"/>
+    <HBox spacing="10">
+        <TextField fx:id="addTagNameTextField" promptText="Add tag name" />
+        <TextField fx:id="addTagValueTextField" promptText="Add tag value" />
+        <Button onAction="#onAddTag" text="Add Tag" />
+    </HBox>
+    <HBox spacing="10">
+        <TextField fx:id="deleteTagNameTextField" promptText="Delete tag name" />
+        <TextField fx:id="deleteTagValueTextField" promptText="Delete tag value" />
+        <Button onAction="#onDeleteTag" text="Delete Tag" />
+    </HBox>
     <Button fx:id="backButton" text="Back" onAction="#onBack"/>
 </VBox>

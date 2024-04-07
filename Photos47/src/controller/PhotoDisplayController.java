@@ -34,15 +34,20 @@ public class PhotoDisplayController {
     private List<Photo> photos;
     private int currIndex;
     private User user;
+    private String albumName;
 
-    public void initSlideShow(List<Photo> photos, int index, User user){
+    public void initSlideShow(List<Photo> photos, int index, User user, String albumName){
         this.user = user;
         this.photos = photos;
+        this.albumName = albumName;
         currIndex = index;
         showPhoto(index);
     }
     private void showPhoto(int index){
         Photo photo = photos.get(index);
+        imageView.setFitWidth(200);
+        imageView.setFitHeight(200);
+        imageView.setPreserveRatio(true);
         imageView.setImage(new Image(photo.getPath()));
         captionLabel.setText(photo.getCaption());
         dateLabel.setText(photo.getDate().toString());
@@ -65,11 +70,10 @@ public class PhotoDisplayController {
     @FXML
     private void onBack(){
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UserView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AlbumDisplayView.fxml"));
             Parent userRoot = loader.load();
-            UserController userController = loader.getController();
-            userController.initialize(user.getUsername());
-            System.out.println(user.getUsername());
+            AlbumDisplayController albumController = loader.getController();
+            albumController.initUser(user,albumName);
             Stage stage = (Stage) backButton.getScene().getWindow();
             Scene scene = new Scene(userRoot, 600, 500);
             stage.setScene(scene);

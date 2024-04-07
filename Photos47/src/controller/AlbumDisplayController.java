@@ -28,6 +28,7 @@ import javafx.stage.Stage;
 import model.Album;
 import model.AlbumDisplay;
 import model.Photo;
+import model.Tag;
 import model.User;
 import util.CommonUtil;
 import util.DataUtil;
@@ -43,8 +44,14 @@ public class AlbumDisplayController {
     private TextField copyTextField;
     @FXML
     private TextField moveTextField;
-
-
+    @FXML
+    private TextField addTagNameTextField;
+    @FXML
+    private TextField addTagValueTextField;
+    @FXML
+    private TextField deleteTagNameTextField;
+    @FXML
+    private TextField deleteTagValueTextField;
     private User user;
     private String albumName;
     
@@ -57,7 +64,10 @@ public class AlbumDisplayController {
         displayPhotos();
         photoListView.setOnMouseClicked((event) ->{
             if(event.getClickCount() == 2){
-                
+                Photo selectedPhoto = photoListView.getSelectionModel().getSelectedItem();
+                if(selectedPhoto != null) {
+                    openPhotoDisplay(selectedPhoto);
+                }            
             }
         });
     }
@@ -112,7 +122,7 @@ public class AlbumDisplayController {
             CommonUtil.errorGUI("Album doesn't exist!");
         }
     }
-    
+
     @FXML
     private void onUpdateCaption(){
         Photo currentPhoto = photoListView.getSelectionModel().getSelectedItem();
@@ -123,36 +133,43 @@ public class AlbumDisplayController {
             displayPhotos();
             captionTextField.clear();
         }else{
-            CommonUtil.errorGUI("Pick a photo to edit");
+            CommonUtil.errorGUI("Pick a photo to edit and type in the value");
         }
+    }
+    @FXML
+    private void onAddTag(){
+        Photo currentPhoto = photoListView.getSelectionModel().getSelectedItem();
+        String newTagName = addTagNameTextField.getText();
+        String newTagValue = addTagValueTextField.getText();
+        if(currentPhoto != null && newTagName != null && newTagValue != null){
+            user.findAlbum(albumName).findPhoto(currentPhoto).addTag(new Tag(newTagName, newTagValue));
+            DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
+            displayPhotos();
+            addTagNameTextField.clear();
+            addTagValueTextField.clear();
+        }else{
+            CommonUtil.errorGUI("Pick a photo to edit and type in the value");
+        } 
+    }
+
+    @FXML
+    private void onDeleteTag(){
+        Photo currentPhoto = photoListView.getSelectionModel().getSelectedItem();
+        String newTagName = deleteTagNameTextField.getText();
+        String newTagValue = deleteTagValueTextField.getText();
+        if(currentPhoto != null && newTagName != null && newTagValue != null){
+            user.findAlbum(albumName).findPhoto(currentPhoto).removeTag(new Tag(newTagName, newTagValue));
+            DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
+            displayPhotos();
+            deleteTagNameTextField.clear();
+            deleteTagValueTextField.clear();
+        }else{
+            CommonUtil.errorGUI("Pick a photo to edit and type in the value");
+        } 
     }
 
     private void setPhotoListCellFactory(){
         photoListView.setCellFactory(param -> new ListCell<Photo>(){
-            private ImageView imageView = new ImageView();
-            private Label label = new Label();
-            private HBox hBox = new HBox(8, imageView, label);
-            {
-                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-                hBox.setAlignment(Pos.CENTER_LEFT);
-                hBox.setPadding(new Insets(5, 0, 5, 10));
-                imageView.setFitHeight(50);
-                imageView.setFitWidth(50);
-                imageView.setPreserveRatio(true);
-            }
-            @Override
-            public void updateItem(Photo photo, boolean empty){
-                super.updateItem(photo, empty);
-                if (empty || photo == null)
-                    setGraphic(null);
-                else{
-                    imageView.setImage(new Image(photo.getPath()));
-                    label.setText(photo.getCaption());
-                    setGraphic(hBox);
-                }
-            }
-        });
-                photoListView.setCellFactory(param -> new ListCell<Photo>(){
             private ImageView imageView = new ImageView();
             private Label label = new Label();
             private HBox hBox = new HBox(8, imageView, label);
@@ -182,7 +199,7 @@ public class AlbumDisplayController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/PhotoDisplay.fxml"));
             Parent PhotoDisplayroot = loader.load();
             PhotoDisplayController controller = loader.getController();
-            controller.initSlideShow(photoListView.getItems(), photoListView.getItems().indexOf(currPhoto), user);
+            controller.initSlideShow(photoListView.getItems(), photoListView.getItems().indexOf(currPhoto), user,albumName);
             Stage stage = (Stage) backButton.getScene().getWindow();
             Scene scene = new Scene(PhotoDisplayroot, 600, 500);
             stage.setScene(scene);
