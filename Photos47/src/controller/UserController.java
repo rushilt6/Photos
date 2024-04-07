@@ -267,6 +267,26 @@ public class UserController
         try
         {
             String deletedAlbumName = deletedAlbumText.getText();
+            Album delAlbum = user.findAlbum(deletedAlbumName);
+            if (delAlbum != null) 
+            {            
+                for (Photo p : delAlbum.getPhotos()) 
+                {
+                    boolean inOtherAlbum = false;
+                    for(Album album : user.getAlbums().values())
+                    {
+                        if (!album.getName().equals(deletedAlbumName) && album.containsPhoto(p)) {
+                            inOtherAlbum = true;
+                            break;
+                        }
+                    }
+                    if (!inOtherAlbum) 
+                    {
+                        user.removePhoto(p);
+                        DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
+                    }
+                }
+            }
             user.removeAlbum(deletedAlbumName);
             DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
             displayAlbums();

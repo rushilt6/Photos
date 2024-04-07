@@ -34,6 +34,10 @@ public class Album implements Serializable{
         if(photos.contains(photo))
             photos.remove(photo);
     }
+    public boolean containsPhoto(Photo photo)
+    {
+        return photos.contains(photo);
+    }
     public boolean equals(Object o){
         if (this==o) return true;
         if(o == null || (!(o instanceof Album))) return false;
