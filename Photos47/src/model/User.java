@@ -11,13 +11,15 @@ public class User implements Serializable{
     private String username;
     private Map<String, Album> albums;
     private Set<Photo> photos;
-    private Set<Tag> presetTags;
+    private Set<String> presetTags;
 
     public User(String username){
         this.username = username;
         this.albums = new HashMap<>();
         photos = new HashSet<>();
         presetTags = new HashSet<>();
+        presetTags.add("person");
+        presetTags.add("location");
     }
     public String getUsername(){
         return username;
@@ -46,14 +48,14 @@ public class User implements Serializable{
         if(photos.contains(photo))
             photos.remove(photo);
     }
-    public Set<Tag> getPresetTags(){
+    public Set<String> getPresetTags(){
         return presetTags;
     }
-    public void addPresetTag(Tag tag){
-        presetTags.add(tag);
+    public void addPresetTag(String tagname){
+        presetTags.add(tagname);
     }
-    public void removePresetTag(Tag tag){
-        presetTags.remove(tag);
+    public void removePresetTag(String tagname){
+        presetTags.remove(tagname);
     }
     public boolean equals(Object o){
         if(this==o) return true;

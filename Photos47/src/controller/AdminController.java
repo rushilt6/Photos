@@ -1,14 +1,21 @@
 package controller;
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import model.Admin;
 import model.User;
+import util.CommonUtil;
 import util.DataUtil;
 public class AdminController {
     private Admin admin;
@@ -19,7 +26,8 @@ public class AdminController {
     private TextField deleteUser;
     @FXML
     private ListView<String> listUsers;
-
+    @FXML
+    private Button logoutButton;
 
     public AdminController(){
         File file = new File("data/admin.ser");
@@ -31,7 +39,15 @@ public class AdminController {
             DataUtil.saveObjToFile(admin, "data/admin.ser");
         }
     }
-
+    @FXML
+    private void logout() throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainView.fxml"));
+        Parent rootView = loader.load();
+        Stage stage = (Stage) logoutButton.getScene().getWindow();
+        Scene scene = new Scene(rootView,600, 500);
+        stage.setScene(scene);
+        stage.show();
+    }
     @FXML
     private void onAddUser(){
         String username = addUser.getText();
@@ -41,6 +57,10 @@ public class AdminController {
             DataUtil.saveObjToFile(admin, "data/admin.ser");
             DataUtil.saveObjToFile(newUser, "data/"+username+".ser");
         }
+        else{
+            CommonUtil.errorGUI("User already exists/null value!");
+        }
+        
     }
 
     @FXML
@@ -50,6 +70,9 @@ public class AdminController {
             admin.removeUser(username);
             DataUtil.saveObjToFile(admin, "data/admin.ser");
             DataUtil.deleteFile(username);
+        }
+        else{
+            CommonUtil.errorGUI("User doesn't exist!");
         }
     }
 

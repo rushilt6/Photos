@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import util.CommonUtil;
 import util.DataUtil;
 
 public class MainViewController {
@@ -42,6 +43,9 @@ public class MainViewController {
                     Scene UserScene = new Scene(UserRoot,600, 500);
                     stage.setScene(UserScene);
                     stage.show();
+                }
+                else{
+                    CommonUtil.errorGUI("User doesn't exist!, create from admin");
                 }
             }
         } catch(Exception e){

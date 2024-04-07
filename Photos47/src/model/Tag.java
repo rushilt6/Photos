@@ -24,7 +24,7 @@ public class Tag implements Serializable{
     }
 
     public String toString(){
-        return "Tag{ " +"tagName='" + tagName + '\'' +", tagValue='" + tagValue + '\'' + '}';
+        return "Name: '" + tagName +", tagValue: " + tagValue;
     }
 
     public boolean equals(Object o){

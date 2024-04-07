@@ -1,43 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.geometry.Insets?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserController">
-    <Label text="Your Albums:"/>
-    
-    <!-- Check if the user has albums -->
-    <fx:define>
-        <Label fx:id="noAlbumsLabel" text="No albums available"/>
-    </fx:define>
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserController">
+    <top>
+        <HBox alignment="TOP_RIGHT">
+            <Button fx:id="logoutButton" text="Logout" onAction="#logout" />
+            <HBox.margin>
+                <Insets top="10" right="10" bottom="0" left="0"/>
+            </HBox.margin>
+        </HBox>
+    </top>
+    <center>
+        <VBox>
+            <Label text="Your Albums:" />
 
-    <!-- If the user has albums, display album information -->
-    <VBox fx:id="albumInfoContainer" visible="false">
-        <!-- Dynamically add album information here using controller -->
-    </VBox>
-    <HBox spacing="10">
-        <TextField fx:id="albumNameField" promptText="Enter album name"/>
-        <Button text="Create Album" onAction="#onCreateAlbum"/>
-    </HBox>
-    <HBox spacing="10">
-        <Button text="Choose Photo" onAction="#onChoosePhoto"/>
-        <TextField fx:id="photoCaption" promptText="Enter caption"/>
-        <Button text="Add Photo" onAction="#onAddPhoto"/>
-    </HBox>
-    
-    <!-- Delete Album Section -->
-    <HBox spacing="10" fx:id="deleteAlbumSection">
-        <TextField fx:id="deleteAlbumField" promptText="Enter album to delete"/>
-        <Button text="Delete Album" onAction="#onDeleteAlbum" disable="true"/>
-    </HBox>
+            <VBox spacing="10">
+            </VBox>
+            <HBox spacing="10">
+                <TextField fx:id="albumNameField" promptText="Enter album name" />
+                <Button onAction="#onCreateAlbum" text="Create Album" />
+            </HBox>
+            <HBox spacing="10">
+                <Button onAction="#onChoosePhoto" text="Choose Photo" />
+                <TextField fx:id="photoCaption" promptText="Enter caption" />
+            </HBox>
+            <HBox spacing="10">
+                <ComboBox fx:id="presetTagsComboBox" promptText="Select a tag" />
+                <Button text="Clear Selection" onAction="#onClearSelection"/>
+                <TextField fx:id="customTagNameField" promptText="OR Tag name" />
+                <TextField fx:id="customTagValueField" promptText="Tag value" />
+                <Button text="Add Tag" onAction="#onAddTag" />
+            </HBox>
+            <HBox spacing="10">
+                <Button onAction="#onAddPhoto" text="Add Photo" />
+            </HBox>
+            
+            <!-- Delete Album Section -->
+            <HBox spacing="10">
+                <TextField fx:id="deletedAlbumText" promptText="Enter album to delete" />
+                <Button onAction="#onDeleteAlbum" text="Delete Album" />
+            </HBox>
 
-    <!-- Rename Album Section -->
-    <HBox spacing="10" fx:id="renameAlbumSection">
-        <TextField fx:id="renameAlbumField" promptText="Enter album to rename"/>
-        <TextField fx:id="newAlbumNameField" promptText="Enter new album name"/>
-        <Button text="Rename Album" onAction="#onRenameAlbum" disable="true"/>
-    </HBox>
-</VBox>
+            <!-- Rename Album Section -->
+            <HBox spacing="10">
+                <TextField fx:id="renameAlbumText" promptText="Enter album to rename" />
+                <TextField fx:id="newNameAlbumText" promptText="Enter new album name" />
+                <Button onAction="#onRenameAlbum" text="Rename Album" />
+            </HBox>
+            <!--Delete Preset Tag-->
+            <HBox spacing="10">
+                <ComboBox fx:id="deletePresetTagsComboBox" promptText="Select a tag" />
+                <Button text="Remove from Presets" onAction="#onRemoveFromPresets"/>
+            </HBox>
+            <!-- Search Photos Section -->
+            <Label text="Search Photos By Tags:"/>
+            <HBox spacing="10">
+                <ComboBox fx:id="searchTagsComboBox1" promptText="Select a tag"/>
+                <ComboBox fx:id="searchTagsComboBox2" promptText="Select a tag"/>
+            </HBox>
+            <HBox spacing="10">
+                <TextField fx:id="tagNameField1" promptText="OR Tag Name 1"/>
+                <TextField fx:id="tagValueField1" promptText="Tag Value"/>
+                <TextField fx:id="tagNameField2" promptText="OR Tag Name 2"/>
+                <TextField fx:id="tagValueField2" promptText="Tag Value"/>
+            </HBox>
+            <HBox spacing="10">
+                <Label text="Date Range:"/>
+                <TextField fx:id="startDateField" promptText="Start Date 0000-00-00"/>
+                <TextField fx:id="endDateField" promptText="End Date 0000-00-00"/>
+            </HBox>
+            <Button text="Search" onAction="#onSearchPhoto"/>
+        <ListView fx:id="albumListView" prefHeight="200.0" prefWidth="200.0" />
+        </VBox>
+    </center>
+</BorderPane>
