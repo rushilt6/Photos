@@ -6,9 +6,13 @@
 <?import javafx.scene.control.TextField?>
 
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AlbumDisplayController" spacing="10">
-    <Label text="Click on Photo to edit caption, then type in text field. Double click to view" />
+    <Label text="Click on Photo, then type in text field. Double click to view slideshow" />
     <ListView fx:id="photoListView" VBox.vgrow="ALWAYS"/>
     <TextField fx:id="captionTextField" promptText="Edit caption..."/>
     <Button text="Update Caption" onAction="#onUpdateCaption"/>
+    <TextField fx:id="copyTextField" promptText="copy to Album..."/>
+    <Button text="Copy Photo" onAction="#onCopyPhoto"/>
+    <TextField fx:id="moveTextField" promptText="move to Album..."/>
+    <Button text="Move Photo" onAction="#onMovePhoto"/>
     <Button fx:id="backButton" text="Back" onAction="#onBack"/>
 </VBox>

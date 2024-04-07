@@ -21,6 +21,12 @@ public class Album implements Serializable{
     public Set<Photo> getPhotos(){
         return photos;
     }
+    public Photo findPhoto(Photo photo){
+        for(Photo p : photos){
+            if(p.equals(photo)) return p;
+        }
+        return null;
+    }
     public void addPhoto(Photo photo){
         photos.add(photo);
     }

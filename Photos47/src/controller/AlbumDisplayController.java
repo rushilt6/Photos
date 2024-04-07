@@ -30,6 +30,7 @@ import model.AlbumDisplay;
 import model.Photo;
 import model.User;
 import util.CommonUtil;
+import util.DataUtil;
 
 public class AlbumDisplayController {
     @FXML
@@ -38,12 +39,17 @@ public class AlbumDisplayController {
     private Button backButton;
     @FXML
     private TextField captionTextField;
-    
+    @FXML
+    private TextField copyTextField;
+    @FXML
+    private TextField moveTextField;
+
+
     private User user;
     private String albumName;
-
-    private Photo currentPhoto;
     
+
+
     public void initUser(User user, String albumName){
         this.user = user;
         this.albumName = albumName;
@@ -51,9 +57,6 @@ public class AlbumDisplayController {
         displayPhotos();
         photoListView.setOnMouseClicked((event) ->{
             if(event.getClickCount() == 2){
-                
-            }
-            if(event.getClickCount() == 1){
                 
             }
         });
@@ -84,8 +87,44 @@ public class AlbumDisplayController {
         photoListView.setItems(photos);
     }
     @FXML
+    private void onCopyPhoto(){
+        Photo currentPhoto = photoListView.getSelectionModel().getSelectedItem();
+        String copyToAlbumName = copyTextField.getText();
+        if(copyToAlbumName != null && user.findAlbum(copyToAlbumName)!=null){
+            user.findAlbum(copyToAlbumName).addPhoto(currentPhoto);
+            DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
+            displayPhotos();
+            copyTextField.clear();
+        }else{
+            CommonUtil.errorGUI("Album doesn't exist!");
+        }
+    }
+    @FXML
+    private void onMovePhoto(){
+        Photo currentPhoto = photoListView.getSelectionModel().getSelectedItem();
+        String moveToAlbumName = moveTextField.getText();
+        if(moveToAlbumName != null && user.findAlbum(moveToAlbumName)!=null){
+            user.findAlbum(moveToAlbumName).addPhoto(currentPhoto);
+            user.findAlbum(albumName).removePhoto(currentPhoto);
+            DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
+            displayPhotos();
+            moveTextField.clear();
+        }else{
+            CommonUtil.errorGUI("Album doesn't exist!");
+        }
+    }
+    @FXML
     private void onUpdateCaption(){
-
+        Photo currentPhoto = photoListView.getSelectionModel().getSelectedItem();
+        String newCaption = captionTextField.getText();
+        if(currentPhoto != null && newCaption != null){
+            user.findAlbum(albumName).findPhoto(currentPhoto).setCaption(newCaption);
+            DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
+            displayPhotos();
+            captionTextField.clear();
+        }else{
+            CommonUtil.errorGUI("Pick a photo to edit");
+        }
     }
     private void setPhotoListCellFactory(){
         photoListView.setCellFactory(param -> new ListCell<Photo>(){
