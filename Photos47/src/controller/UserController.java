@@ -35,6 +35,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.util.*;
 
@@ -66,6 +68,8 @@ public class UserController
     private Button searchPhotoButton;
     @FXML
     private ListView<AlbumDisplay> albumListView;
+    @FXML
+    private ListView<PhotoDisplay> photoListView;
     @FXML
     private ComboBox<String> presetTagsComboBox;
     @FXML
@@ -105,7 +109,30 @@ public class UserController
         user = (User)DataUtil.loadObjFromFile("data/"+DataUtil.generateFilenameForUser(username));
         displayPresetTags();
         displayAlbums();
+    albumListView.setOnMouseClicked((event) ->{
+            if(event.getClickCount() == 2){
+                AlbumDisplay currAlbum = albumListView.getSelectionModel().getSelectedItem();
+                openAlbum(currAlbum.getAlbum());
+            }
+        });
     }
+    private void openAlbum(Album album){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AlbumDisplayView.fxml"));
+            Parent root = loader.load();
+            AlbumDisplayController controller = loader.getController();
+            controller.initUser(user, album.getName());
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) albumListView.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+
+        }catch(Exception e){
+            e.printStackTrace();
+            CommonUtil.errorGUI("Couldn't open album");
+        }
+    }
+
     @FXML
     public void displayPresetTags(){
         ObservableList<String> presetTags = FXCollections.observableArrayList();
@@ -124,7 +151,7 @@ public class UserController
         albums.forEach((name, album) -> {
             int numPics = album.getPhotos().size();
             String dateRange = calculateDateRange(album);
-            obsList.add(new AlbumDisplay(name, numPics, dateRange));
+            obsList.add(new AlbumDisplay(album, name, numPics, dateRange));
         });
         albumListView.setItems(obsList);
     }
@@ -223,7 +250,7 @@ public class UserController
                                                 .toLocalDate();
             if (selectedFile != null && caption != null) 
             {
-                Photo photo = new Photo(selectedFile.getPath(), caption, date);
+                Photo photo = new Photo(selectedFile.toURI().toString(), caption, date);
                 for(Tag t: tagList){
                     photo.addTag(t);
                     user.getPresetTags().add(t.getName());
@@ -325,8 +352,36 @@ public class UserController
         String endingDate = endDate.getText();
         if(tag1 != null) tagName1 = tag1;
         if(tag2 != null) tagName2 = tag2;
- 
- 
+        
+
+        List<Photo> photosInRange = new ArrayList<>();
+        Set<Photo> photos = user.getPhotos();
+        LocalDate sd = LocalDate.parse(beginDate);
+        LocalDate ed = LocalDate.parse(endingDate);
+        for(Photo p : photos)
+        {
+            LocalDate photoDate = p.getDate();
+            if (photoDate.isAfter(sd) && photoDate.isBefore(ed)) 
+            {
+                photosInRange.add(p);
+            }
+        }
+        if(photosInRange.isEmpty())
+        {
+            CommonUtil.errorGUI("No Photos In Range!");
+        }
+        else
+        {
+            ObservableList<AlbumDisplay> obsList = FXCollections.observableArrayList();
+            for(Photo photo : photosInRange)
+            {
+                String caption = photo.getCaption();
+                Image image = new Image(photo.getPath());
+                ImageView imageV = new ImageView(image);
+                obsList.add(new PhotoDisplay(caption, imageV));
+            }
+            photoListView.setItems(obsList);
+        }
        
         customTagNameField.clear();
         customTagValueField.clear();
