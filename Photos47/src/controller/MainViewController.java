@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.File;
 import java.io.IOException;
 
 import javafx.event.ActionEvent;
@@ -30,6 +31,16 @@ public class MainViewController {
                 Scene adminScene = new Scene(adminRoot,600, 500);
                 stage.setScene(adminScene);
                 stage.show();
+            }
+            else{
+                File file = new File("data/"+DataUtil.generateFilenameForUser(username));
+                if(file.exists()){
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UserView.fxml"));
+                    Parent UserRoot = loader.load();
+                    Scene UserScene = new Scene(UserRoot,600, 500);
+                    stage.setScene(UserScene);
+                    stage.show();
+                }
             }
         } catch(Exception e){
             System.out.println("File not found!");
