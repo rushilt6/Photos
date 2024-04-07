@@ -79,6 +79,8 @@
                 <TextField fx:id="endDateField" promptText="End Date 0000-00-00"/>
             </HBox>
             <Button text="Search" onAction="#onSearchPhoto"/>
+
+            
         <ListView fx:id="albumListView" prefHeight="200.0" prefWidth="200.0" />
         </VBox>
     </center>
