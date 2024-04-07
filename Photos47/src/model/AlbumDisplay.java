@@ -6,10 +6,15 @@ public class AlbumDisplay {
     private String albumName;
     private int numPhotos;
     private String dateRange;
-    public AlbumDisplay(String albumName, int numPhotos, String dateRange){
+    private Album album;
+    public AlbumDisplay(Album album, String albumName, int numPhotos, String dateRange){
+        this.album = album;
         this.albumName = albumName;
         this.numPhotos = numPhotos;
         this.dateRange = dateRange;
+    }
+    public Album getAlbum(){
+        return album;
     }
     public int getNumPhotos(){
         return numPhotos;

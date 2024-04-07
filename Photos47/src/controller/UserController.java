@@ -53,16 +53,6 @@ public class UserController
     @FXML
     private TextField openAlbumText;
     @FXML
-    private Button createAlbumButton;
-    @FXML
-    private Button choosePhotoButton;
-    @FXML
-    private Button addPhotoButton;
-    @FXML
-    private Button deleteAlbumButton;
-    @FXML
-    private Button renameAlbumButton;
-    @FXML
     private ListView<AlbumDisplay> albumListView;
     @FXML
     private ComboBox<String> presetTagsComboBox;
@@ -93,7 +83,30 @@ public class UserController
         user = (User)DataUtil.loadObjFromFile("data/"+DataUtil.generateFilenameForUser(username));
         displayPresetTags();
         displayAlbums();
+        albumListView.setOnMouseClicked((event) ->{
+            if(event.getClickCount() == 2){
+                AlbumDisplay currAlbum = albumListView.getSelectionModel().getSelectedItem();
+                openAlbum(currAlbum.getAlbum());
+            }
+        });
     }
+    private void openAlbum(Album album){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AlbumDisplayView.fxml"));
+            Parent root = loader.load();
+            AlbumDisplayController controller = loader.getController();
+            controller.initUser(user, album.getName());
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) albumListView.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+
+        }catch(Exception e){
+            e.printStackTrace();
+            CommonUtil.errorGUI("Couldn't open album");
+        }
+    }
+
     @FXML
     public void displayPresetTags(){
         ObservableList<String> presetTags = FXCollections.observableArrayList();
@@ -110,7 +123,7 @@ public class UserController
         albums.forEach((name, album) -> {
             int numPics = album.getPhotos().size();
             String dateRange = calculateDateRange(album);
-            obsList.add(new AlbumDisplay(name, numPics, dateRange));
+            obsList.add(new AlbumDisplay(album, name, numPics, dateRange));
         });
         albumListView.setItems(obsList);
     }
@@ -185,7 +198,6 @@ public class UserController
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.jpeg"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
         selectedFile = fileChooser.showOpenDialog(new Stage());
-        
     }
     @FXML
     private void onAddTag(){
@@ -209,7 +221,7 @@ public class UserController
                                                 .toLocalDate();
             if (selectedFile != null && caption != null) 
             {
-                Photo photo = new Photo(selectedFile.getPath(), caption, date);
+                Photo photo = new Photo(selectedFile.toURI().toString(), caption, date);
                 for(Tag t: tagList){
                     photo.addTag(t);
                     user.getPresetTags().add(t.getName());
@@ -269,36 +281,5 @@ public class UserController
         renameAlbumText.clear();
         newNameAlbumText.clear();
     }
-    //@FXML
-    /* 
-    private void onOpenAlbum()
-    {
-        try
-        {
-            String albumName = openAlbumText.getText();
-            Stage stage = (Stage) openAlbumText.getScene().getWindow();
-            System.out.println("Album Name Entered " + albumName);
-            if(user.getAlbums().containsKey(albumName))
-            {
-                try{
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AlbumView.fxml"));
-                    Parent albumRoot = loader.load();
-                    AlbumController albumController = loader.getController();
-                    albumController.setAlbum(user.getAlbums().get(albumName));
-                    Scene albumScene = new Scene(albumRoot,600, 500);
-                    stage.setScene(albumScene);
-                    stage.show();
-                }
-                catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        } catch(Exception e){
-            System.out.println("Album not found!");
-        } 
-    }
-    */
-
 
 }
