@@ -37,6 +37,8 @@ public class MainViewController {
                 if(file.exists()){
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AdminView.fxml"));
                     Parent UserRoot = loader.load();
+                    UserController userController = loader.getController();
+                    userController.initialize(username);
                     Scene UserScene = new Scene(UserRoot,600, 500);
                     stage.setScene(UserScene);
                     stage.show();
