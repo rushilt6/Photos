@@ -1,4 +1,7 @@
 package controller;
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -14,16 +17,23 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.Admin;
 import model.Album;
+import model.AlbumDisplay;
 import model.Photo;
+import model.Tag;
 import model.User;
+import util.CommonUtil;
 import util.DataUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
 import java.util.*;
@@ -52,44 +62,62 @@ public class UserController
     private Button deleteAlbumButton;
     @FXML
     private Button renameAlbumButton;
+    @FXML
+    private ListView<AlbumDisplay> albumListView;
+    @FXML
+    private ComboBox<String> presetTagsComboBox;
+    @FXML
+    private ComboBox<String> deletePresetTagsComboBox;
+    @FXML
+    private TextField customTagNameField, customTagValueField;
+    @FXML
+    private Button logoutButton;
 
-    private List<Photo> addedPhotos = new ArrayList<>();;
+
+    private List<Photo> addedPhotos = new ArrayList<>();
     private User user;
     private File selectedFile;
-
-
+    @FXML
+    private void logout() throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainView.fxml"));
+        Parent rootView = loader.load();
+        Stage stage = (Stage) logoutButton.getScene().getWindow();
+        Scene scene = new Scene(rootView,600, 500);
+        stage.setScene(scene);
+        stage.show();
+    }
     @FXML
     public void initialize(String username){
         user = (User)DataUtil.loadObjFromFile("data/"+DataUtil.generateFilenameForUser(username));
+        displayPresetTags();
+        displayAlbums();
+    }
+    @FXML
+    public void displayPresetTags(){
+        ObservableList<String> presetTags = FXCollections.observableArrayList();
+        for(String tagname: user.getPresetTags()){
+            presetTags.add(tagname);
+        }
+        presetTagsComboBox.setItems(presetTags);
+        deletePresetTagsComboBox.setItems(presetTags);
     }
     @FXML
     public void displayAlbums() {
+        ObservableList<AlbumDisplay> obsList = FXCollections.observableArrayList();
         Map<String, Album> albums = user.getAlbums();
-        
-        for (Map.Entry<String, Album> entry : albums.entrySet()) {
-            String albumName = entry.getKey();
-            Album album = entry.getValue();
-            int photoCount = album.getPhotos().size();
+        albums.forEach((name, album) -> {
+            int numPics = album.getPhotos().size();
             String dateRange = calculateDateRange(album);
-
-            HBox albumInfoBox = new HBox(10); 
-            
-            Label albumLabel = new Label("Album: " + albumName);
-            Label photoCountLabel = new Label("Number of Photos: " + photoCount);
-            Label dateRangeLabel = new Label("Date Range: " + dateRange);
-            
-            albumInfoBox.getChildren().addAll(albumLabel, photoCountLabel, dateRangeLabel);
-            
-        }
+            obsList.add(new AlbumDisplay(name, numPics, dateRange));
+        });
+        albumListView.setItems(obsList);
     }
+
     private String calculateDateRange(Album album) 
     {
         // Get the list of photos in the album
         Set<Photo> photos = album.getPhotos();
         
-        if (photos.isEmpty()) {
-            return "No photos";
-        }
         
         // Initialize earliest and latest dates to the first photo's date
         LocalDate earliestDate = null;
@@ -115,9 +143,23 @@ public class UserController
         return earliestDate + " - " + latestDate;
     }
     @FXML
+    private void onRemoveFromPresets(){
+        String tag = deletePresetTagsComboBox.getSelectionModel().getSelectedItem();
+        if(tag != null){
+            user.getPresetTags().remove(tag);
+            DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
+            displayPresetTags();
+        }
+        else{
+            CommonUtil.errorGUI("Tag is null");
+        }
+    }
+
+    @FXML
     private void onCreateAlbum() {
         String albumName = albumNameField.getText();
-        if (albumName.isEmpty()) {
+        if (albumName.isEmpty() || user.findAlbum(albumName) != null || addedPhotos.size() == 0) {
+            CommonUtil.errorGUI("Error creating album, no Photos added, album already exists, or albumName is empty");
             return;
         }
         Album newAlbum = new Album(albumName);
@@ -126,7 +168,8 @@ public class UserController
         addedPhotos.clear();
         user.addAlbum(newAlbum);
         DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
-
+        
+        displayPresetTags();
         displayAlbums();
         albumNameField.clear();
 
@@ -145,18 +188,34 @@ public class UserController
     @FXML
     private void onAddPhoto()
     {
-        String caption = photoCaption.getText();
-        long lastModifiedDate = selectedFile.lastModified();
-        LocalDate date = Instant.ofEpochMilli(lastModifiedDate)
-                                             .atZone(ZoneId.systemDefault())
-                                             .toLocalDate();
-        if (selectedFile != null && caption != null) 
-        {
-            Photo photo = new Photo(selectedFile.getPath(), caption, date);
-            addedPhotos.add(photo);
+        try{
+            String caption = photoCaption.getText();
+            long lastModifiedDate = selectedFile.lastModified();
+            LocalDate date = Instant.ofEpochMilli(lastModifiedDate)
+                                                .atZone(ZoneId.systemDefault())
+                                                .toLocalDate();
+            String presetTag = presetTagsComboBox.getSelectionModel().getSelectedItem();
+            String tagName = customTagNameField.getText();
+            String tagValue = customTagValueField.getText();
+            if(presetTag != null) tagName = presetTag;
+            if (selectedFile != null && caption != null && tagName != null && tagValue !=null) 
+            {
+                Photo photo = new Photo(selectedFile.getPath(), caption, date);
+                photo.addTag(new Tag(tagName,tagValue));
+                user.getPresetTags().add(tagName);
+                addedPhotos.add(photo);
+            }
+            customTagNameField.clear();
+            customTagValueField.clear();
+            photoCaption.clear();
+            selectedFile = null;
+        }catch(Exception e){
+            CommonUtil.errorGUI("One of the fields is null!");
         }
-        photoCaption.clear();
-        selectedFile = null;
+    }
+    @FXML
+    private void onClearSelection() {
+        presetTagsComboBox.getSelectionModel().clearSelection();
     }
     @FXML
     private void onDeleteAlbum()
@@ -170,7 +229,7 @@ public class UserController
         }
         catch(Exception e)
         {
-            System.out.println("Album not found!");
+            CommonUtil.errorGUI("Album not found or text field empty!");
         }
         deletedAlbumText.clear();
     }
@@ -181,14 +240,21 @@ public class UserController
         {
             String oldName = renameAlbumText.getText();
             String newName = newNameAlbumText.getText();
-            Album album = user.getAlbums().remove(oldName); 
-            user.getAlbums().put(newName, album); 
-            DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
-            displayAlbums();
+            if(user.findAlbum(newName) == null){
+                Album newAlbum = user.findAlbum(oldName);
+                newAlbum.setName(newName);
+                user.getAlbums().remove(oldName);
+                user.getAlbums().put(newName, newAlbum);
+                DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
+                displayAlbums();
+            }
+            else{
+                CommonUtil.errorGUI("Album already exists!");
+            }
         }
         catch(Exception e)
         {
-            System.out.println("Album not found!");
+            CommonUtil.errorGUI("Album not found!");
         }
         renameAlbumText.clear();
         newNameAlbumText.clear();

@@ -3,12 +3,13 @@ package model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
+
 public class Photo implements Serializable {
 
     private String filePath;
     private String caption;
     private LocalDate date;
-    private Set<Tag> tags;
+    private Set<model.Tag> tags;
 
     public Photo(String filePath, String caption, LocalDate date){
         this.filePath = filePath;
@@ -35,10 +36,10 @@ public class Photo implements Serializable {
     public void setDate(LocalDate newDate){
         date = newDate;
     }
-    public void addTag(Tag tag){
+    public void addTag(model.Tag tag){
         tags.add(tag);
     }
-    public void removeTag(Tag tag){
+    public void removeTag(model.Tag tag){
         if(tags.contains(tag))
             tags.remove(tag);
     }

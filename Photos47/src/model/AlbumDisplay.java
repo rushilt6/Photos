@@ -5,11 +5,11 @@ import java.time.LocalDate;
 public class AlbumDisplay {
     private String albumName;
     private int numPhotos;
-    private LocalDate earliestDate;
-    private LocalDate latestDate;
-    private Album album;
-    public AlbumDisplay(Album album){
-        this.album = album;
+    private String dateRange;
+    public AlbumDisplay(String albumName, int numPhotos, String dateRange){
+        this.albumName = albumName;
+        this.numPhotos = numPhotos;
+        this.dateRange = dateRange;
     }
     public int getNumPhotos(){
         return numPhotos;
@@ -17,13 +17,10 @@ public class AlbumDisplay {
     public String getAlbumName(){
         return albumName;
     }
-    public LocalDate getEarliest(){
-        return earliestDate;
+    public String getDateRange(){
+        return dateRange;
     }
-    public LocalDate getLatest(){
-        return latestDate;
-    }
-    public void setAlbumName(String newName){
-        albumName = newName;
+    public String toString(){
+        return "Name: "+albumName+", Number of Pictures: "+numPhotos+", Dates: "+dateRange;
     }
 }
