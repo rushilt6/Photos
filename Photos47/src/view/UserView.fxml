@@ -21,7 +21,7 @@
     </top>
     <center>
         <VBox>
-            <Label text="Your Albums(Double click on album to view):" />
+            <Label text="Your Albums(Double click on an album to view):" />
 
             <VBox spacing="10">
             </VBox>

@@ -56,18 +56,6 @@ public class UserController
     @FXML
     private TextField openAlbumText;
     @FXML
-    private Button createAlbumButton;
-    @FXML
-    private Button choosePhotoButton;
-    @FXML
-    private Button addPhotoButton;
-    @FXML
-    private Button deleteAlbumButton;
-    @FXML
-    private Button renameAlbumButton;
-    @FXML
-    private Button searchPhotoButton;
-    @FXML
     private ListView<AlbumDisplay> albumListView;
     @FXML
     private ComboBox<String> presetTagsComboBox;
@@ -375,9 +363,26 @@ public class UserController
             e.printStackTrace();
             CommonUtil.errorGUI("Couldn't open photos");
         }
+<<<<<<< HEAD
    }
 
     
+=======
+        else
+        {
+            ObservableList<AlbumDisplay> obsList = FXCollections.observableArrayList();
+            for(Photo photo : photosInRange)
+            {
+                String caption = photo.getCaption();
+                Image image = new Image(photo.getPath());
+                ImageView imageV = new ImageView(image);
+            }
+        }
+       
+        customTagNameField.clear();
+        customTagValueField.clear();
+    }
+>>>>>>> 263cfbf2f73121cdae060e853e99efeaf1322785
  
 
 
