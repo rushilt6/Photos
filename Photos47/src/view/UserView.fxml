@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.stage.FileChooser?>
+
+<VBox fx:id="albumVBox" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserController">
+    <!-- Label for indicating album section -->
+    <Label text="Your Albums:"/>
+
+    <!-- Container for album information -->
+    <VBox spacing="10">
+        <!-- This is where the album information will be displayed dynamically -->
+    </VBox>
+
+    <!-- Input fields for creating a new album -->
+    <HBox spacing="10">
+        <TextField fx:id="albumNameField" promptText="Enter album name"/>
+        <Button text="Create Album" onAction="#onCreateAlbum"/>
+    </HBox>
+
+    <!-- Input fields and button for adding a photo to the album -->
+    <HBox spacing="10">
+        <Button text="Choose Photo" onAction="#onChoosePhoto"/>
+        <TextField fx:id="photoCaptionField" promptText="Enter caption"/>
+        <Button text="Add Photo" onAction="#onAddPhoto"/>
+    </HBox>
+</VBox>
