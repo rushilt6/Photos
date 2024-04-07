@@ -35,7 +35,7 @@ public class MainViewController {
             else{
                 File file = new File("data/"+DataUtil.generateFilenameForUser(username));
                 if(file.exists()){
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UserView.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AdminView.fxml"));
                     Parent UserRoot = loader.load();
                     UserController userController = loader.getController();
                     userController.initialize(username);

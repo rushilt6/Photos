@@ -5,20 +5,44 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.stage.FileChooser?>
 
+<<<<<<< HEAD
+<VBox fx:id="albumVBox" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserController">
+=======
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserController">
+>>>>>>> 06e9342d280e9ff3f1e3876cf9e17c70796fcca0
     <Label text="Your Albums:"/>
 
     <VBox spacing="10">
     </VBox>
+<<<<<<< HEAD
+
+=======
+>>>>>>> 06e9342d280e9ff3f1e3876cf9e17c70796fcca0
     <HBox spacing="10">
         <TextField fx:id="albumNameField" promptText="Enter album name"/>
         <Button text="Create Album" onAction="#onCreateAlbum"/>
     </HBox>
+<<<<<<< HEAD
+
+=======
+>>>>>>> 06e9342d280e9ff3f1e3876cf9e17c70796fcca0
     <HBox spacing="10">
         <Button text="Choose Photo" onAction="#onChoosePhoto"/>
         <TextField fx:id="photoCaption" promptText="Enter caption"/>
         <Button text="Add Photo" onAction="#onAddPhoto"/>
+    </HBox>
+    
+    <!-- Delete Album Section -->
+    <HBox spacing="10">
+        <TextField fx:id="deleteAlbumField" promptText="Enter album to delete"/>
+        <Button text="Delete Album" onAction="#onDeleteAlbum" disable="true"/>
+    </HBox>
+
+    <!-- Rename Album Section -->
+    <HBox spacing="10">
+        <TextField fx:id="renameAlbumField" promptText="Enter album to rename"/>
+        <TextField fx:id="newAlbumNameField" promptText="Enter new album name"/>
+        <Button text="Rename Album" onAction="#onRenameAlbum" disable="true"/>
     </HBox>
 </VBox>
