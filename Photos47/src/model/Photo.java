@@ -29,16 +29,19 @@ public class Photo implements Serializable {
     public void setCaption(String newCaption){
         caption = newCaption;
     }
+    public Set<Tag> getTags(){
+        return tags;
+    }
     public LocalDate getDate(){
         return date;
     }
     public void setDate(LocalDate newDate){
         date = newDate;
     }
-    public void addTag(model.Tag tag){
+    public void addTag(Tag tag){
         tags.add(tag);
     }
-    public void removeTag(model.Tag tag){
+    public void removeTag(Tag tag){
         if(tags.contains(tag))
             tags.remove(tag);
     }

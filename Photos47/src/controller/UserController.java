@@ -35,6 +35,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.util.*;
 
@@ -59,7 +61,17 @@ public class UserController
     @FXML
     private ComboBox<String> deletePresetTagsComboBox;
     @FXML
+    private ComboBox<String> searchTagsComboBox1;
+    @FXML
+    private ComboBox<String> searchTagsComboBox2;
+    @FXML
+    private TextField tagNameField1, tagValueField1;
+    @FXML
+    private TextField tagNameField2, tagValueField2;
+    @FXML
     private TextField customTagNameField, customTagValueField;
+    @FXML
+    private TextField beginningDate, endDate;
     @FXML
     private Button logoutButton;
 
@@ -83,7 +95,7 @@ public class UserController
         user = (User)DataUtil.loadObjFromFile("data/"+DataUtil.generateFilenameForUser(username));
         displayPresetTags();
         displayAlbums();
-        albumListView.setOnMouseClicked((event) ->{
+    albumListView.setOnMouseClicked((event) ->{
             if(event.getClickCount() == 2){
                 AlbumDisplay currAlbum = albumListView.getSelectionModel().getSelectedItem();
                 openAlbum(currAlbum.getAlbum());
@@ -114,6 +126,8 @@ public class UserController
             presetTags.add(tagname);
         }
         presetTagsComboBox.setItems(presetTags);
+        searchTagsComboBox1.setItems(presetTags);
+        searchTagsComboBox2.setItems(presetTags);
         deletePresetTagsComboBox.setItems(presetTags);
     }
     @FXML
@@ -198,6 +212,7 @@ public class UserController
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.jpeg"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
         selectedFile = fileChooser.showOpenDialog(new Stage());
+        
     }
     @FXML
     private void onAddTag(){
@@ -281,5 +296,51 @@ public class UserController
         renameAlbumText.clear();
         newNameAlbumText.clear();
     }
+    @FXML
+    private void onSearchPhoto(){
+        String tag1 = searchTagsComboBox1.getSelectionModel().getSelectedItem();
+        String tag2 = searchTagsComboBox2.getSelectionModel().getSelectedItem();
+        String tagName1 = tagNameField1.getText();
+        String tagValue1 = tagValueField1.getText();
+        String tagName2 = tagNameField2.getText();
+        String tagValue2 = tagValueField2.getText();
+        String beginDate = beginningDate.getText();
+        String endingDate = endDate.getText();
+        if(tag1 != null) tagName1 = tag1;
+        if(tag2 != null) tagName2 = tag2;
+        
+
+        List<Photo> photosInRange = new ArrayList<>();
+        Set<Photo> photos = user.getPhotos();
+        LocalDate sd = LocalDate.parse(beginDate);
+        LocalDate ed = LocalDate.parse(endingDate);
+        for(Photo p : photos)
+        {
+            LocalDate photoDate = p.getDate();
+            if (photoDate.isAfter(sd) && photoDate.isBefore(ed)) 
+            {
+                photosInRange.add(p);
+            }
+        }
+        if(photosInRange.isEmpty())
+        {
+            CommonUtil.errorGUI("No Photos In Range!");
+        }
+        else
+        {
+            ObservableList<AlbumDisplay> obsList = FXCollections.observableArrayList();
+            for(Photo photo : photosInRange)
+            {
+                String caption = photo.getCaption();
+                Image image = new Image(photo.getPath());
+                ImageView imageV = new ImageView(image);
+            }
+        }
+       
+        customTagNameField.clear();
+        customTagValueField.clear();
+    }
+ 
+
 
 }

@@ -68,7 +68,6 @@ public class AlbumDisplayController {
             Parent userRoot = loader.load();
             UserController userController = loader.getController();
             userController.initialize(user.getUsername());
-            System.out.println(user.getUsername());
             Stage stage = (Stage) backButton.getScene().getWindow();
             Scene scene = new Scene(userRoot, 600, 500);
             stage.setScene(scene);
@@ -113,6 +112,7 @@ public class AlbumDisplayController {
             CommonUtil.errorGUI("Album doesn't exist!");
         }
     }
+    
     @FXML
     private void onUpdateCaption(){
         Photo currentPhoto = photoListView.getSelectionModel().getSelectedItem();
@@ -126,6 +126,7 @@ public class AlbumDisplayController {
             CommonUtil.errorGUI("Pick a photo to edit");
         }
     }
+
     private void setPhotoListCellFactory(){
         photoListView.setCellFactory(param -> new ListCell<Photo>(){
             private ImageView imageView = new ImageView();
@@ -175,5 +176,20 @@ public class AlbumDisplayController {
                 }
             }
         });
+    }
+    private void openPhotoDisplay(Photo currPhoto){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/PhotoDisplay.fxml"));
+            Parent PhotoDisplayroot = loader.load();
+            PhotoDisplayController controller = loader.getController();
+            controller.initSlideShow(photoListView.getItems(), photoListView.getItems().indexOf(currPhoto), user);
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            Scene scene = new Scene(PhotoDisplayroot, 600, 500);
+            stage.setScene(scene);
+            stage.show();
+        }catch(Exception e){
+            e.printStackTrace();
+            CommonUtil.errorGUI("Couldn't open Photo Display");
+        }
     }
 }

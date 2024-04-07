@@ -61,6 +61,24 @@
                 <ComboBox fx:id="deletePresetTagsComboBox" promptText="Select a tag" />
                 <Button text="Remove from Presets" onAction="#onRemoveFromPresets"/>
             </HBox>
+            <!-- Search Photos Section -->
+            <Label text="Search Photos By Tags:"/>
+            <HBox spacing="10">
+                <ComboBox fx:id="searchTagsComboBox1" promptText="Select a tag"/>
+                <ComboBox fx:id="searchTagsComboBox2" promptText="Select a tag"/>
+            </HBox>
+            <HBox spacing="10">
+                <TextField fx:id="tagNameField1" promptText="OR Tag Name 1"/>
+                <TextField fx:id="tagValueField1" promptText="Tag Value"/>
+                <TextField fx:id="tagNameField2" promptText="OR Tag Name 2"/>
+                <TextField fx:id="tagValueField2" promptText="Tag Value"/>
+            </HBox>
+            <HBox spacing="10">
+                <Label text="Date Range:"/>
+                <TextField fx:id="startDateField" promptText="Start Date 0000-00-00"/>
+                <TextField fx:id="endDateField" promptText="End Date 0000-00-00"/>
+            </HBox>
+            <Button text="Search" onAction="#onSearchPhoto"/>
         <ListView fx:id="albumListView" prefHeight="200.0" prefWidth="200.0" />
         </VBox>
     </center>
