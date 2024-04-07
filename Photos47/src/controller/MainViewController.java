@@ -32,16 +32,6 @@ public class MainViewController {
                 stage.setScene(adminScene);
                 stage.show();
             }
-<<<<<<< HEAD
-            else if(username.trim().equalsIgnoreCase("user"))
-            {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/UserView.fxml"));
-                Parent userRoot = loader.load();
-                UserController userController = loader.getController();
-                Scene userScene = new Scene(userRoot,600, 500);
-                stage.setScene(userScene);
-                stage.show();
-=======
             else{
                 File file = new File("data/"+DataUtil.generateFilenameForUser(username));
                 if(file.exists()){
@@ -53,7 +43,6 @@ public class MainViewController {
                     stage.setScene(UserScene);
                     stage.show();
                 }
->>>>>>> 3da20bb563415aeaa0d67eac2604a5706e40dee5
             }
         } catch(Exception e){
             System.out.println("File not found!");
