@@ -30,6 +30,7 @@ import model.AlbumDisplay;
 import model.Photo;
 import model.User;
 import util.CommonUtil;
+import util.DataUtil;
 
 public class SearchDisplayController {
     @FXML
@@ -37,7 +38,7 @@ public class SearchDisplayController {
     @FXML
     private Button backButton;
     @FXML
-    private TextField captionTextField;
+    private TextField albumNameText;
     
     private User user;
     private List<Photo> photos;
@@ -81,10 +82,6 @@ public class SearchDisplayController {
             photo.add(p);
         }
         photoListView.setItems(photo);
-    }
-    @FXML
-    private void onUpdateCaption(){
-
     }
     private void setPhotoListCellFactory(){
         photoListView.setCellFactory(param -> new ListCell<Photo>(){
@@ -135,5 +132,24 @@ public class SearchDisplayController {
                 }
             }
         });
+    }
+    @FXML
+    private void onCreateAlbum()
+    {
+        String albumName = albumNameText.getText();
+        if (albumName.isEmpty() || user.findAlbum(albumName) != null || photos.size() == 0) {
+            CommonUtil.errorGUI("Error creating album, no Photos added, album already exists, or albumName is empty");
+            return;
+        }
+        Album newAlbum = new Album(albumName);
+        for(Photo p : photos)
+        {
+            newAlbum.addPhoto(p);
+            user.addPhoto(p);
+            DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
+        }
+        user.addAlbum(newAlbum);
+        DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
+        albumNameText.clear();
     }
 }
