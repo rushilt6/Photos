@@ -8,6 +8,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.Admin;
 import model.Album;
@@ -32,11 +35,23 @@ public class UserController
     @FXML
     private TextField photoCaption;
     @FXML
+    private TextField deletedAlbumText;
+    @FXML
+    private TextField renameAlbumText;
+    @FXML
+    private TextField newNameAlbumText;
+    @FXML
+    private TextField openAlbumText;
+    @FXML
     private Button createAlbumButton;
     @FXML
     private Button choosePhotoButton;
     @FXML
     private Button addPhotoButton;
+    @FXML
+    private Button deleteAlbumButton;
+    @FXML
+    private Button renameAlbumButton;
 
     private List<Photo> addedPhotos = new ArrayList<>();;
     private User user;
@@ -110,6 +125,8 @@ public class UserController
             newAlbum.addPhoto(p);
         addedPhotos.clear();
         user.addAlbum(newAlbum);
+        DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
+
         displayAlbums();
         albumNameField.clear();
 
@@ -141,6 +158,71 @@ public class UserController
         photoCaption.clear();
         selectedFile = null;
     }
+    @FXML
+    private void onDeleteAlbum()
+    {
+        try
+        {
+            String deletedAlbumName = deletedAlbumText.getText();
+            user.removeAlbum(deletedAlbumName);
+            DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
+            displayAlbums();
+        }
+        catch(Exception e)
+        {
+            System.out.println("Album not found!");
+        }
+        deletedAlbumText.clear();
+    }
+    @FXML
+    private void onRenameAlbum()
+    {
+        try
+        {
+            String oldName = renameAlbumText.getText();
+            String newName = newNameAlbumText.getText();
+            Album album = user.getAlbums().remove(oldName); 
+            user.getAlbums().put(newName, album); 
+            DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
+            displayAlbums();
+        }
+        catch(Exception e)
+        {
+            System.out.println("Album not found!");
+        }
+        renameAlbumText.clear();
+        newNameAlbumText.clear();
+    }
+    //@FXML
+    /* 
+    private void onOpenAlbum()
+    {
+        try
+        {
+            String albumName = openAlbumText.getText();
+            Stage stage = (Stage) openAlbumText.getScene().getWindow();
+            System.out.println("Album Name Entered " + albumName);
+            if(user.getAlbums().containsKey(albumName))
+            {
+                try{
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AlbumView.fxml"));
+                    Parent albumRoot = loader.load();
+                    AlbumController albumController = loader.getController();
+                    albumController.setAlbum(user.getAlbums().get(albumName));
+                    Scene albumScene = new Scene(albumRoot,600, 500);
+                    stage.setScene(albumScene);
+                    stage.show();
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        } catch(Exception e){
+            System.out.println("Album not found!");
+        } 
+    }
+    */
 
 
 }
