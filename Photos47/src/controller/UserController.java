@@ -53,14 +53,29 @@ public class UserController
     @FXML
     private Button renameAlbumButton;
 
+    @FXML
+    private HBox deleteAlbumSection;
+    @FXML
+    private HBox renameAlbumSection;
+
     private List<Photo> addedPhotos = new ArrayList<>();;
     private User user;
     private File selectedFile;
 
 
     @FXML
-    public void initialize(String username){
+    public void initialize(String username)
+    {
         user = (User)DataUtil.loadObjFromFile("data/"+DataUtil.generateFilenameForUser(username));
+        if (user.getAlbums().isEmpty()) {
+            // If no albums, hide the delete and rename album sections
+            deleteAlbumSection.setVisible(false);
+            renameAlbumSection.setVisible(false);
+        } else {
+            // If albums exist, show the delete and rename album sections
+            deleteAlbumSection.setVisible(true);
+            renameAlbumSection.setVisible(true);
+        }
     }
     @FXML
     public void displayAlbums() {
@@ -126,9 +141,8 @@ public class UserController
         addedPhotos.clear();
         user.addAlbum(newAlbum);
         DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
-
-        displayAlbums();
         albumNameField.clear();
+        displayAlbums();
 
     }
     @FXML

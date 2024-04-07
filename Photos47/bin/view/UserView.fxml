@@ -8,8 +8,15 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserController">
     <Label text="Your Albums:"/>
+    
+    <!-- Check if the user has albums -->
+    <fx:define>
+        <Label fx:id="noAlbumsLabel" text="No albums available"/>
+    </fx:define>
 
-    <VBox spacing="10">
+    <!-- If the user has albums, display album information -->
+    <VBox fx:id="albumInfoContainer" visible="false">
+        <!-- Dynamically add album information here using controller -->
     </VBox>
     <HBox spacing="10">
         <TextField fx:id="albumNameField" promptText="Enter album name"/>
@@ -22,13 +29,13 @@
     </HBox>
     
     <!-- Delete Album Section -->
-    <HBox spacing="10">
+    <HBox spacing="10" fx:id="deleteAlbumSection">
         <TextField fx:id="deleteAlbumField" promptText="Enter album to delete"/>
         <Button text="Delete Album" onAction="#onDeleteAlbum" disable="true"/>
     </HBox>
 
     <!-- Rename Album Section -->
-    <HBox spacing="10">
+    <HBox spacing="10" fx:id="renameAlbumSection">
         <TextField fx:id="renameAlbumField" promptText="Enter album to rename"/>
         <TextField fx:id="newAlbumNameField" promptText="Enter new album name"/>
         <Button text="Rename Album" onAction="#onRenameAlbum" disable="true"/>
