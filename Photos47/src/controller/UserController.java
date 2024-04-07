@@ -40,14 +40,8 @@ public class UserController
     private List<Photo> addedPhotos;
     
 
-    public UserController(){
-        try{
-            this.user = (User)DataUtil.loadObjFromFile("data/user.ser");
-        }
-        catch(Exception e){
-            this.user = new User(user.getUsername());
-        }
-    }
+    
+
     @FXML
     public void displayAlbums() {
         Map<String, Album> albums = user.getAlbums();
