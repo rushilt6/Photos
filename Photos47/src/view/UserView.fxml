@@ -6,27 +6,15 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<<<<<<< HEAD
-<VBox fx:id="albumVBox" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserController">
-=======
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserController">
->>>>>>> 06e9342d280e9ff3f1e3876cf9e17c70796fcca0
     <Label text="Your Albums:"/>
 
     <VBox spacing="10">
     </VBox>
-<<<<<<< HEAD
-
-=======
->>>>>>> 06e9342d280e9ff3f1e3876cf9e17c70796fcca0
     <HBox spacing="10">
         <TextField fx:id="albumNameField" promptText="Enter album name"/>
         <Button text="Create Album" onAction="#onCreateAlbum"/>
     </HBox>
-<<<<<<< HEAD
-
-=======
->>>>>>> 06e9342d280e9ff3f1e3876cf9e17c70796fcca0
     <HBox spacing="10">
         <Button text="Choose Photo" onAction="#onChoosePhoto"/>
         <TextField fx:id="photoCaption" promptText="Enter caption"/>

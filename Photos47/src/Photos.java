@@ -9,7 +9,7 @@ public class Photos extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/view/MainView.fxml")); // Adjust path as necessary
+        Parent root = FXMLLoader.load(getClass().getResource("/view/UserView.fxml")); // Adjust path as necessary
         primaryStage.setTitle("Photo Application");
         primaryStage.setScene(new Scene(root,600,500));
         primaryStage.show();
