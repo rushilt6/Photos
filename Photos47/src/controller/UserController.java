@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import model.Admin;
 import model.Album;
 import model.AlbumDisplay;
+import model.SearchDisplay;
 import model.Photo;
 import model.Tag;
 import model.User;
@@ -71,7 +72,7 @@ public class UserController
     @FXML
     private TextField customTagNameField, customTagValueField;
     @FXML
-    private TextField beginningDate, endDate;
+    private TextField startDateField, endDateField;
     @FXML
     private Button logoutButton;
 
@@ -193,14 +194,18 @@ public class UserController
         }
         Album newAlbum = new Album(albumName);
         for(Photo p : addedPhotos)
+        {
             newAlbum.addPhoto(p);
-        addedPhotos.clear();
+            user.addPhoto(p);
+            DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
+        }
         user.addAlbum(newAlbum);
         DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
         
         displayPresetTags();
         displayAlbums();
         albumNameField.clear();
+        addedPhotos.clear();
 
     }
     @FXML
@@ -297,35 +302,72 @@ public class UserController
         newNameAlbumText.clear();
     }
     @FXML
-    private void onSearchPhoto(){
-        String tag1 = searchTagsComboBox1.getSelectionModel().getSelectedItem();
-        String tag2 = searchTagsComboBox2.getSelectionModel().getSelectedItem();
-        String tagName1 = tagNameField1.getText();
-        String tagValue1 = tagValueField1.getText();
-        String tagName2 = tagNameField2.getText();
-        String tagValue2 = tagValueField2.getText();
-        String beginDate = beginningDate.getText();
-        String endingDate = endDate.getText();
-        if(tag1 != null) tagName1 = tag1;
-        if(tag2 != null) tagName2 = tag2;
-        
+   private void onSearchPhoto(){
+       String tag1 = searchTagsComboBox1.getSelectionModel().getSelectedItem();
+       String tag2 = searchTagsComboBox2.getSelectionModel().getSelectedItem();
+       String tagName1 = tagNameField1.getText();
+       String tagValue1 = tagValueField1.getText();
+       String tagName2 = tagNameField2.getText();
+       String tagValue2 = tagValueField2.getText();
+       String beginDate = startDateField.getText();
+       String endingDate = endDateField.getText();
+       if(tag1 != null) tagName1 = tag1;
+       if(tag2 != null) tagName2 = tag2;
+      
 
-        List<Photo> photosInRange = new ArrayList<>();
-        Set<Photo> photos = user.getPhotos();
-        LocalDate sd = LocalDate.parse(beginDate);
-        LocalDate ed = LocalDate.parse(endingDate);
-        for(Photo p : photos)
-        {
-            LocalDate photoDate = p.getDate();
-            if (photoDate.isAfter(sd) && photoDate.isBefore(ed)) 
+
+       Set<Photo> photos = user.getPhotos();
+       if(beginDate!=null && endingDate!=null)
+       {
+            List<Photo> photosInRange = new ArrayList<>();
+            LocalDate sd = LocalDate.parse(beginDate);
+            LocalDate ed = LocalDate.parse(endingDate);
+            for(Photo p : photos)
             {
-                photosInRange.add(p);
+                LocalDate photoDate = p.getDate();
+                if ((photoDate.isEqual(sd) || photoDate.isAfter(sd)) && (photoDate.isEqual(ed) || photoDate.isBefore(ed)))
+                {
+                    photosInRange.add(p); 
+                }
+            }
+            if(photosInRange.isEmpty())
+            {
+                CommonUtil.errorGUI("No Photos In Range!");
+            }
+            else
+            {
+                searchPhotos(photosInRange);
             }
         }
-        if(photosInRange.isEmpty())
-        {
-            CommonUtil.errorGUI("No Photos In Range!");
+       tagNameField1.clear();
+       tagNameField2.clear();
+       tagValueField1.clear();
+       tagValueField2.clear();
+       startDateField.clear();
+       endDateField.clear();
+
+   }
+
+   private void searchPhotos(List<Photo> photos)
+   {
+        try{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SearchDisplayView.fxml"));
+        Parent root = loader.load();
+        SearchDisplayController controller = loader.getController();
+        controller.initUser(user, photos);
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) albumListView.getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+        }catch(Exception e){
+            e.printStackTrace();
+            CommonUtil.errorGUI("Couldn't open photos");
         }
+<<<<<<< HEAD
+   }
+
+    
+=======
         else
         {
             ObservableList<AlbumDisplay> obsList = FXCollections.observableArrayList();
@@ -340,6 +382,7 @@ public class UserController
         customTagNameField.clear();
         customTagValueField.clear();
     }
+>>>>>>> 263cfbf2f73121cdae060e853e99efeaf1322785
  
 
 
