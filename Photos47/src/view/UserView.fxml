@@ -68,10 +68,13 @@
                 <ComboBox fx:id="searchTagsComboBox2" promptText="Select a tag"/>
             </HBox>
             <HBox spacing="10">
-                <TextField fx:id="tagNameField1" promptText="OR Tag Name 1"/>
+                <TextField fx:id="tagNameField1" promptText="Non-Pre Tag1"/>
                 <TextField fx:id="tagValueField1" promptText="Tag Value"/>
-                <TextField fx:id="tagNameField2" promptText="OR Tag Name 2"/>
+                <TextField fx:id="tagNameField2" promptText="Non-Pre Tag2"/>
                 <TextField fx:id="tagValueField2" promptText="Tag Value"/>
+            </HBox>
+            <HBox spacing="10">
+                <TextField fx:id="andOr" promptText="And/Or"/>
             </HBox>
             <HBox spacing="10">
                 <Label text="Date Range:"/>
