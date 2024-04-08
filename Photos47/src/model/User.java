@@ -39,14 +39,13 @@ public class User implements Serializable{
         return albums.get(albumName);
     }
     public Set<Photo> getPhotos(){
+        photos = new HashSet<>();
+        for(Map.Entry<String, Album> entry : albums.entrySet()){
+            for(Photo photo : entry.getValue().getPhotos()){
+                photos.add(photo);
+            }
+        }
         return photos;
-    }
-    public void addPhoto(Photo photo){
-        photos.add(photo);
-    }
-    public void removePhoto(Photo photo){
-        if(photos.contains(photo))
-            photos.remove(photo);
     }
     public Set<String> getPresetTags(){
         return presetTags;

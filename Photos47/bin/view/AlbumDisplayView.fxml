@@ -9,6 +9,10 @@
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AlbumDisplayController" spacing="10">
     <Label text="Click on Photo, then type in text field. Double click to view slideshow" />
     <ListView fx:id="photoListView" VBox.vgrow="ALWAYS"/>
+    <HBox spacing="10">
+        <Button onAction="#onAddPhoto" text="Add Photo" />
+        <Button onAction="#onDeletePhoto" text="Delete Photo" />
+    </HBox>
     <TextField fx:id="captionTextField" promptText="Edit caption..."/>
     <Button text="Update Caption" onAction="#onUpdateCaption"/>
     <TextField fx:id="copyTextField" promptText="copy to Album..."/>

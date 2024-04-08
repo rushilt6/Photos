@@ -198,7 +198,6 @@ public class UserController
         for(Photo p : addedPhotos)
         {
             newAlbum.addPhoto(p);
-            user.addPhoto(p);
             DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
         }
         user.addAlbum(newAlbum);

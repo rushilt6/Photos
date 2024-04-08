@@ -1,6 +1,10 @@
 package controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +28,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Album;
 import model.AlbumDisplay;
@@ -134,6 +139,42 @@ public class AlbumDisplayController {
             captionTextField.clear();
         }else{
             CommonUtil.errorGUI("Pick a photo to edit and type in the value");
+        }
+    }
+    @FXML
+    private void onAddPhoto(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose Picture");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.jpeg"),
+                new FileChooser.ExtensionFilter("All Files", "*.*"));
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+        try{
+            long lastModifiedDate = selectedFile.lastModified();
+            LocalDate date = Instant.ofEpochMilli(lastModifiedDate)
+                                                .atZone(ZoneId.systemDefault())
+                                                .toLocalDate();
+            if (selectedFile != null) 
+            {
+                Photo photo = new Photo(selectedFile.toURI().toString(), "", date);
+                user.findAlbum(albumName).addPhoto(photo);
+                DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
+                displayPhotos();
+            }
+
+        }catch(Exception e){
+            CommonUtil.errorGUI("One of the fields is null!");
+        }
+    }
+    @FXML
+    private void onDeletePhoto(){
+        Photo currentPhoto = photoListView.getSelectionModel().getSelectedItem();
+        if(currentPhoto != null){
+            user.findAlbum(albumName).removePhoto(currentPhoto);
+            DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
+            displayPhotos();
+        }else{
+            CommonUtil.errorGUI("Select a photo to be deleted");
         }
     }
     @FXML
