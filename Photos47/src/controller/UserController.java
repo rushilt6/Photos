@@ -215,7 +215,7 @@ public class UserController
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose Picture");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.jpeg"),
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.jpeg", "*.bmp"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
         selectedFile = fileChooser.showOpenDialog(new Stage());
         
@@ -331,7 +331,6 @@ public class UserController
                 {
                     boolean hasTag1 = false;
                     boolean hasTag2 = false;
-                    System.out.println("WE HERE");
                     for(Tag t : p.getTags())
                     {
                         if(t.getName().equalsIgnoreCase(tagName1) && t.getValue().equalsIgnoreCase(tagValue1))
