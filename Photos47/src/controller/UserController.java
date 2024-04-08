@@ -266,9 +266,13 @@ public class UserController
         try
         {
             String deletedAlbumName = deletedAlbumText.getText();
-            user.removeAlbum(deletedAlbumName);
-            DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
-            displayAlbums();
+            Album delAlbum = user.findAlbum(deletedAlbumName);
+            if (delAlbum != null) 
+            {            
+                user.removeAlbum(deletedAlbumName);
+                DataUtil.saveObjToFile(user, "data/"+user.getUsername()+".ser");
+                displayAlbums();  
+            }
         }
         catch(Exception e)
         {

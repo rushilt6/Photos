@@ -8,7 +8,7 @@
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SearchDisplayController" spacing="10">
     <Label text="Click on Photo to edit caption, then type in text field. Double click to view" />
     <ListView fx:id="photoListView" VBox.vgrow="ALWAYS"/>
-    <TextField fx:id="captionTextField" promptText="Edit caption..."/>
-    <Button text="Update Caption" onAction="#onUpdateCaption"/>
+    <TextField fx:id="albumNameText" promptText="Name the Album"/>
+    <Button text="Create Album" onAction="#onCreateAlbum"/>
     <Button fx:id="backButton" text="Back" onAction="#onBack"/>
 </VBox>
