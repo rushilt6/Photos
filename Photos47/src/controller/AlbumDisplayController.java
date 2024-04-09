@@ -61,7 +61,12 @@ public class AlbumDisplayController {
     private String albumName;
     
 
-
+    /**
+     * Initializes the user and keeps track of the album that is opened. 
+     * The album name is the key in order to get the rest of the album data
+     * @param user Takes in the current user that is trying to display an album
+     * @param albumName Takes in the albumName that the user is trying to open
+     */
     public void initUser(User user, String albumName){
         this.user = user;
         this.albumName = albumName;
@@ -76,6 +81,9 @@ public class AlbumDisplayController {
             }
         });
     }
+    /**
+     * Allows the user who is in the album display to go back to the user display
+     */
     @FXML
     private void onBack(){
         try{
@@ -91,6 +99,9 @@ public class AlbumDisplayController {
             CommonUtil.errorGUI("Back not working");
         }
     }
+    /**
+     * Displays the photos that are contained within the opened album
+     */
     @FXML
     private void displayPhotos(){
         ObservableList<Photo> photos = FXCollections.observableArrayList();
@@ -100,6 +111,9 @@ public class AlbumDisplayController {
         }
         photoListView.setItems(photos);
     }
+    /**
+     * Copies the photo
+     */
     @FXML
     private void onCopyPhoto(){
         Photo currentPhoto = photoListView.getSelectionModel().getSelectedItem();
@@ -127,7 +141,9 @@ public class AlbumDisplayController {
             CommonUtil.errorGUI("Album doesn't exist!");
         }
     }
-
+    /**
+     * Allows user to update captions on photos within the opened album
+     */
     @FXML
     private void onUpdateCaption(){
         Photo currentPhoto = photoListView.getSelectionModel().getSelectedItem();
@@ -141,12 +157,15 @@ public class AlbumDisplayController {
             CommonUtil.errorGUI("Pick a photo to edit and type in the value");
         }
     }
+    /**
+     * Allows user to add photos to an opened album
+     */
     @FXML
     private void onAddPhoto(){
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose Picture");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.jpeg"),
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.jpeg", "*.bmp"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
         File selectedFile = fileChooser.showOpenDialog(new Stage());
         try{
@@ -166,6 +185,9 @@ public class AlbumDisplayController {
             CommonUtil.errorGUI("One of the fields is null!");
         }
     }
+    /**
+     * Allows user to delete photos within a given opened album
+     */
     @FXML
     private void onDeletePhoto(){
         Photo currentPhoto = photoListView.getSelectionModel().getSelectedItem();
@@ -177,6 +199,9 @@ public class AlbumDisplayController {
             CommonUtil.errorGUI("Select a photo to be deleted");
         }
     }
+    /**
+     * Allows the user to add a tag to any of the photos in an album
+     */
     @FXML
     private void onAddTag(){
         Photo currentPhoto = photoListView.getSelectionModel().getSelectedItem();
@@ -192,7 +217,9 @@ public class AlbumDisplayController {
             CommonUtil.errorGUI("Pick a photo to edit and type in the value");
         } 
     }
-
+    /**
+     * Allows user to delete a tag on a photo within the opened album
+     */
     @FXML
     private void onDeleteTag(){
         Photo currentPhoto = photoListView.getSelectionModel().getSelectedItem();
@@ -208,7 +235,18 @@ public class AlbumDisplayController {
             CommonUtil.errorGUI("Pick a photo to edit and type in the value");
         } 
     }
-
+    /** 
+     * Sets a custom cell factory for the photoListView, which is a ListView of Photo objects.
+     * Each cell in the ListView will display an ImageView and a Label containing the photo's caption.
+     * The ImageView displays the photo's image and the Label displays the photo's caption.
+     * 
+     * The cell factory ensures that each cell is properly populated with the corresponding photo's data.
+     * 
+     * This method utilizes JavaFX to achieve the desired cell layout and functionality.
+     * 
+    * @see Photo Photo is a class in model
+    * @see ListView
+    */
     private void setPhotoListCellFactory(){
         photoListView.setCellFactory(param -> new ListCell<Photo>(){
             private ImageView imageView = new ImageView();
@@ -235,6 +273,11 @@ public class AlbumDisplayController {
             }
         });
     }
+    /**
+     * Slideshow for the photos in an album
+     * Goes to the photodisplay controller which is where the slideshow is
+     * @param currPhoto
+     */
     private void openPhotoDisplay(Photo currPhoto){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/PhotoDisplay.fxml"));

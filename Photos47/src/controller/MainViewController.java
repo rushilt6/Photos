@@ -18,7 +18,12 @@ public class MainViewController {
 
     @FXML
     private TextField usernameTextField;
-
+    /**
+     * Enter a username(admin or any user which was created by the user) to go to the admin/user screen
+     * Only acceps valid inputs
+     * @param event
+     * @throws IOException
+     */
     @FXML
     protected void submitUserName(ActionEvent event) throws IOException {
         try{

@@ -35,7 +35,13 @@ public class PhotoDisplayController {
     private int currIndex;
     private User user;
     private String albumName;
-
+    /**
+     * Initializes all the photos in a slideshow
+     * @param photos
+     * @param index
+     * @param user
+     * @param albumName
+     */
     public void initSlideShow(List<Photo> photos, int index, User user, String albumName){
         this.user = user;
         this.photos = photos;
@@ -43,6 +49,10 @@ public class PhotoDisplayController {
         currIndex = index;
         showPhoto(index);
     }
+    /**
+     * Shows the photo that is inputed
+     * @param index
+     */
     private void showPhoto(int index){
         Photo photo = photos.get(index);
         imageView.setFitWidth(200);
@@ -53,6 +63,9 @@ public class PhotoDisplayController {
         dateLabel.setText(photo.getDate().toString());
         tagListView.setItems(FXCollections.observableArrayList(new ArrayList<>(photo.getTags())));
     }
+    /**
+     * Go to the next photo in the slideshow
+     */
     @FXML
     private void goNext(){
         if(currIndex < photos.size() - 1){
@@ -60,6 +73,9 @@ public class PhotoDisplayController {
             showPhoto(currIndex);
         }
     }
+    /**
+     * Goes to the previous photo in the slideshow
+     */
     @FXML
     private void goPrevious(){
         if(currIndex > 0){
@@ -67,6 +83,9 @@ public class PhotoDisplayController {
             showPhoto(currIndex);
         }
     }
+    /**
+     * Allows the user to back out of the slideshow and return to the opened album
+     */
     @FXML
     private void onBack(){
         try{
