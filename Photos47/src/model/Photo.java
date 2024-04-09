@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
+/**
+ * Photo class which stores information on the photo, like caption and tag
+ * @authors Girish Ranganathan, Rushil Thummaluru
+ */
 public class Photo implements Serializable {
 
     private String filePath;

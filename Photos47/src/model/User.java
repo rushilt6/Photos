@@ -7,6 +7,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * User class which holds attributes specific to the User, like their name and albums. There can be many users
+ * @authors Girish Ranganathan, Rushil Thummaluru
+ */
 public class User implements Serializable{
     private String username;
     private Map<String, Album> albums;

@@ -2,6 +2,10 @@ package model;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * Tag class which holds attributes specific to a tag on a photo
+ * @authors Girish Ranganathan, Rushil Thummaluru
+ */
 public class Tag implements Serializable{
     private String tagName;
     private String tagValue;

@@ -42,6 +42,10 @@ import javafx.scene.image.ImageView;
 
 import java.util.*;
 
+/**
+ * This is responsbile for displaying the scene where the user can create albums, delete albums, etc.
+ * @authors Girish Ranganathan, Rushil Thummaluru
+ */
 public class UserController 
 {
     @FXML

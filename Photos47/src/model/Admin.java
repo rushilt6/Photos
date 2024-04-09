@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Admin class which holds all attributes of a single Admin
+ * @authors Girish Ranganathan, Rushil Thummaluru
+ */
 public class Admin implements Serializable {
     private Map<String, User> users;
 

@@ -32,6 +32,10 @@ import model.User;
 import util.CommonUtil;
 import util.DataUtil;
 
+/**
+ * This is responsbile for controlling the scene where a user is looking for searched photos
+ * @authors Girish Ranganathan, Rushil Thummaluru
+ */
 public class SearchDisplayController {
     @FXML
     private ListView<Photo> photoListView;

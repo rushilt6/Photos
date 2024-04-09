@@ -19,6 +19,10 @@ import model.Tag;
 import model.User;
 import util.CommonUtil;
 
+/**
+ * This is the scene where the user can view the photos in an open album as a slideshow
+ * @authors Girish Ranganathan, Rushil Thummaluru
+ */
 public class PhotoDisplayController {
     @FXML
     private ImageView imageView;

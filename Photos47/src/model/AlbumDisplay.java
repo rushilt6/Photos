@@ -2,6 +2,10 @@ package model;
 
 import java.time.LocalDate;
 
+/**
+ * Album display helper class which helps the controller dispaly the albums
+ * @authors Girish Ranganathan, Rushil Thummaluru
+ */
 public class AlbumDisplay {
     private String albumName;
     private int numPhotos;

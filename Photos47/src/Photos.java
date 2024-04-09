@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
+ * This is the application which is meant to be run to start the whole process
  * @authors Girish Ranganathan, Rushil Thummaluru
  */
 public class Photos extends Application {

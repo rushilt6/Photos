@@ -14,6 +14,10 @@ import javafx.stage.Stage;
 import util.CommonUtil;
 import util.DataUtil;
 
+/**
+ * This is respoonsible for controlling the mainView scene where people can login
+ * @authors Girish Ranganathan, Rushil Thummaluru
+ */
 public class MainViewController {
 
     @FXML
