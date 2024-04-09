@@ -48,8 +48,8 @@ public class SearchDisplayController {
     /**
      * Once the search has been executed, this method stores the user that initiated the search
      * and the photos that fit the search criteria
-     * @param user
-     * @param photos
+     * @param user The current user who is trying to search for photos
+     * @param photos The list of photos that match the description for search
      */
     public void initUser(User user, List<Photo> photos){
         this.user = user;

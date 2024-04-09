@@ -15,7 +15,7 @@ public class Admin implements Serializable {
     }
     /**
      * gets users and returns a map of users
-     * @return
+     * @return users
      */
     public Map<String, User> getUsers(){
         return users;
@@ -23,7 +23,7 @@ public class Admin implements Serializable {
     /**
      * returns true or false if a user exists
      * @param username
-     * @return
+     * @return returns a boolean
      */
     public boolean userExists(String username){
         if(users.containsKey(username)) return true;
@@ -31,14 +31,14 @@ public class Admin implements Serializable {
     }
     /**
      * adds a user to a list
-     * @param user
+     * @param user the user that is going to be added
      */
     public void addUser(User user){
         users.put(user.getUsername(), user);
     }
     /**
      * removes a user
-     * @param username
+     * @param username the username of the user that is going to be removed
      */
     public void removeUser(String username){
         if(users.containsKey(username))

@@ -21,8 +21,8 @@ public class MainViewController {
     /**
      * Enter a username(admin or any user which was created by the user) to go to the admin/user screen
      * Only acceps valid inputs
-     * @param event
-     * @throws IOException
+     * @param event 
+     * @throws IOException Throws exception for an invalid file
      */
     @FXML
     protected void submitUserName(ActionEvent event) throws IOException {

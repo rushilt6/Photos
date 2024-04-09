@@ -32,28 +32,47 @@ public class Album implements Serializable{
     }
     /**
      * Gets the photos within an album
-     * @return
+     * @return photos of an album
      */
     public Set<Photo> getPhotos(){
         return photos;
     }
+    /**
+     * Finds a specific photo in the album
+     * @param photo Photo that needs to be found
+     * @return returns null if the photo isn't there, or returns the photo if it is found
+     */
     public Photo findPhoto(Photo photo){
         for(Photo p : photos){
             if(p.equals(photo)) return p;
         }
         return null;
     }
+    /**
+     * Adds the photo to the list of photos in an album
+     * @param photo takes in the photo that is going to be added
+     */
     public void addPhoto(Photo photo){
         photos.add(photo);
     }
+    /**
+     * Removes a photo from the album
+     * @param photo Takes in a photo that is going to be removed
+     */
     public void removePhoto(Photo photo){
         if(photos.contains(photo))
             photos.remove(photo);
     }
+    /*
+     * Returns a boolean if a photo is present in the album
+     */
     public boolean containsPhoto(Photo photo)
     {
         return photos.contains(photo);
     }
+    /*
+     * Checks to see if an album is equal to another
+     */
     public boolean equals(Object o){
         if (this==o) return true;
         if(o == null || (!(o instanceof Album))) return false;

@@ -1,4 +1,5 @@
 package controller;
+
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -98,7 +99,7 @@ public class UserController
     }
     /**
      * User is initalized based on their username
-     * @param username
+     * @param username the username of the current user 
      */
     @FXML
     public void initialize(String username){
@@ -115,7 +116,7 @@ public class UserController
     /**
      * Allows the user to open any album of their choice. Takes in an album aprameter
      * Helper method 
-     * @param album
+     * @param album The album that the user wants to open
      */
     private void openAlbum(Album album){
         try{
@@ -164,7 +165,7 @@ public class UserController
     /**
      * Helper method to calculate the range of dates within an album.
      * Helps print out the earliest and latest dates of photos within an album
-     * @param album
+     * @param album Takes an album and calculates its date range within the photos
      * @return
      */
     private String calculateDateRange(Album album) 
@@ -482,7 +483,7 @@ public class UserController
    /**
     * Helper method for searchPhotos which switches the screen to the screen 
     * to the search screen. 
-    * @param photos
+    * @param photos List of photos that match the search criteria and need to be displayed on a different screen
     */
    private void searchPhotos(List<Photo> photos)
    {

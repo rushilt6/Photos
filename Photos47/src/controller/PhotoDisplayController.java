@@ -37,10 +37,10 @@ public class PhotoDisplayController {
     private String albumName;
     /**
      * Initializes all the photos in a slideshow
-     * @param photos
-     * @param index
-     * @param user
-     * @param albumName
+     * @param photos List of photos that are going to be displayed
+     * @param index The index of the photo in photos that is currently going to be displayed
+     * @param user The current user who is trying to access the slideshow
+     * @param albumName The album name on which the slideshow will present the albums photos
      */
     public void initSlideShow(List<Photo> photos, int index, User user, String albumName){
         this.user = user;
@@ -51,7 +51,7 @@ public class PhotoDisplayController {
     }
     /**
      * Shows the photo that is inputed
-     * @param index
+     * @param index The Current index of the photo in the slideshow
      */
     private void showPhoto(int index){
         Photo photo = photos.get(index);

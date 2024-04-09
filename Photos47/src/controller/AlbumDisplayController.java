@@ -276,7 +276,7 @@ public class AlbumDisplayController {
     /**
      * Slideshow for the photos in an album
      * Goes to the photodisplay controller which is where the slideshow is
-     * @param currPhoto
+     * @param currPhoto Takes in the current photo on the slideshow
      */
     private void openPhotoDisplay(Photo currPhoto){
         try{
