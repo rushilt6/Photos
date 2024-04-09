@@ -3,6 +3,10 @@ package util;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
+/*
+ * Error displaying class which helps display errors in the GUI
+ * @authors Girish Ranganathan, Rushil Thummaluru
+ */
 public class CommonUtil {
     /**
      * This is a way to print out error messgaes in the GUI if a user encounters an error, 

@@ -5,6 +5,10 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Album class which stores all necessary attributes
+ * @authors Girish Ranganathan, Rushil Thummaluru
+ */
 public class Album implements Serializable{
     private String name;
     private Set<Photo> photos;

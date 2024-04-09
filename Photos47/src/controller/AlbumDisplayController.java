@@ -38,6 +38,10 @@ import model.User;
 import util.CommonUtil;
 import util.DataUtil;
 
+/**
+ * Aldum Display Controller which is in charge of displaying an open album
+ * @authors Girish Ranganathan, Rushil Thummaluru
+ */
 public class AlbumDisplayController {
     @FXML
     private ListView<Photo> photoListView;

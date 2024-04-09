@@ -5,6 +5,10 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.IOException;
+/**
+ * Helps store and delete data so the user can close the application and still have their data saved
+ * @authors Girish Ranganathan, Rushil Thummaluru
+ */
 public class DataUtil {
     /**
      * Saves the user object to file so that it can be accessed and still have all of its

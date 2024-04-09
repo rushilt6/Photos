@@ -3,6 +3,10 @@ package model;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * Helper class which helps display the searched photos by the user
+ * @authors Girish Ranganathan, Rushil Thummaluru
+ */
 public class SearchDisplay {
     private String caption;
     private Image img;

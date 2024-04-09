@@ -17,6 +17,9 @@ import model.Admin;
 import model.User;
 import util.CommonUtil;
 import util.DataUtil;
+/**
+ * Admin Controller class that controls the admin screen where the admin can make and delete users
+ */
 public class AdminController {
     private Admin admin;
 
@@ -31,6 +34,7 @@ public class AdminController {
 
     /**
      * Creates one singular adimin
+     * @authors Girish Ranganathan, Rushil Thummaluru
      */
     public AdminController(){
         File file = new File("data/admin.ser");
