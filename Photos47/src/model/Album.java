@@ -8,16 +8,32 @@ import java.util.Set;
 public class Album implements Serializable{
     private String name;
     private Set<Photo> photos;
+    /**
+     * Album constructor that takes in a name
+     * @param name name of the album
+     */
     public Album(String name){
         this.name = name;
         this.photos = new HashSet<>();
     }
+    /**
+     * returns the name of the album
+     * @return name of the album
+     */
     public String getName(){
         return name;
     }
+    /**
+     * sets the name of an album
+     * @param newName new name of album
+     */
     public void setName(String newName){
         name = newName;
     }
+    /**
+     * Gets the photos within an album
+     * @return
+     */
     public Set<Photo> getPhotos(){
         return photos;
     }

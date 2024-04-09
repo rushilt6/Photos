@@ -83,7 +83,10 @@ public class UserController
     private User user;
     private File selectedFile;
     private Set<Tag> tagList = new HashSet<>();
-
+    /**
+     * User is allowed to logout and return to the login screen
+     * @throws IOException
+     */
     @FXML
     private void logout() throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainView.fxml"));
@@ -93,6 +96,10 @@ public class UserController
         stage.setScene(scene);
         stage.show();
     }
+    /**
+     * User is initalized based on their username
+     * @param username
+     */
     @FXML
     public void initialize(String username){
         user = (User)DataUtil.loadObjFromFile("data/"+DataUtil.generateFilenameForUser(username));
@@ -105,6 +112,11 @@ public class UserController
             }
         });
     }
+    /**
+     * Allows the user to open any album of their choice. Takes in an album aprameter
+     * Helper method 
+     * @param album
+     */
     private void openAlbum(Album album){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/AlbumDisplayView.fxml"));
@@ -121,7 +133,9 @@ public class UserController
             CommonUtil.errorGUI("Couldn't open album");
         }
     }
-
+    /**
+     * Displays the preset tags(Location and person)
+     */
     @FXML
     public void displayPresetTags(){
         ObservableList<String> presetTags = FXCollections.observableArrayList();
@@ -133,6 +147,9 @@ public class UserController
         searchTagsComboBox2.setItems(presetTags);
         deletePresetTagsComboBox.setItems(presetTags);
     }
+    /**
+     * Displays all the albums that the current user has
+     */
     @FXML
     public void displayAlbums() {
         ObservableList<AlbumDisplay> obsList = FXCollections.observableArrayList();
@@ -144,7 +161,12 @@ public class UserController
         });
         albumListView.setItems(obsList);
     }
-
+    /**
+     * Helper method to calculate the range of dates within an album.
+     * Helps print out the earliest and latest dates of photos within an album
+     * @param album
+     * @return
+     */
     private String calculateDateRange(Album album) 
     {
         // Get the list of photos in the album
@@ -174,6 +196,9 @@ public class UserController
         }      
         return earliestDate + " - " + latestDate;
     }
+    /**
+     * Removes a tag from the presets
+     */
     @FXML
     private void onRemoveFromPresets(){
         String tag = deletePresetTagsComboBox.getSelectionModel().getSelectedItem();
@@ -186,7 +211,9 @@ public class UserController
             CommonUtil.errorGUI("Tag is null");
         }
     }
-
+    /**
+     * Method to create an album. Can only be executed once pictures have been added.
+     */
     @FXML
     private void onCreateAlbum() {
         String albumName = albumNameField.getText();
@@ -209,17 +236,24 @@ public class UserController
         addedPhotos.clear();
 
     }
+    /**
+     * User is alloed to choose what photo they want to put into an album
+     * Photos cannot exist outside of an album
+     */
     @FXML
     private void onChoosePhoto()
     {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose Picture");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.jpeg"),
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.jpeg", "*.bmp"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
         selectedFile = fileChooser.showOpenDialog(new Stage());
         
     }
+    /**
+     * User is allowed to add a tag to their photo based on the presets, or their own created tag
+     */
     @FXML
     private void onAddTag(){
         String presetTag = presetTagsComboBox.getSelectionModel().getSelectedItem();
@@ -231,6 +265,9 @@ public class UserController
         customTagNameField.clear();
         customTagValueField.clear();
     }
+    /**
+     * User can click addPhoto once they have chosen a photo to add and a caption/tag if they want
+     */
     @FXML
     private void onAddPhoto()
     {
@@ -256,10 +293,17 @@ public class UserController
             CommonUtil.errorGUI("One of the fields is null!");
         }
     }
+    /**
+     * User can clear whatever preset tag they have selected
+     */
     @FXML
     private void onClearSelection() {
         presetTagsComboBox.getSelectionModel().clearSelection();
     }
+    /**
+     * User can click delete album, which will only run if they have entered a valid 
+     * album name in the area next to this button
+     */
     @FXML
     private void onDeleteAlbum()
     {
@@ -280,6 +324,11 @@ public class UserController
         }
         deletedAlbumText.clear();
     }
+    /**
+     * Allows user to rename an album.
+     * They are only allowed to click this button if they have provided a current album name
+     * and a new album name to rename the album
+     */
     @FXML
     private void onRenameAlbum()
     {
@@ -306,6 +355,11 @@ public class UserController
         renameAlbumText.clear();
         newNameAlbumText.clear();
     }
+    /**
+     * Allows user to search for photos based on their tags or the date range
+     * Users can search for photos with up to two tags and they can search
+     * Conjunctively or Disjunctively. Users cannot search with tags and a date range
+     */
     @FXML
     private void onSearchPhoto(){
        String tag1 = searchTagsComboBox1.getSelectionModel().getSelectedItem();
@@ -331,7 +385,6 @@ public class UserController
                 {
                     boolean hasTag1 = false;
                     boolean hasTag2 = false;
-                    System.out.println("WE HERE");
                     for(Tag t : p.getTags())
                     {
                         if(t.getName().equalsIgnoreCase(tagName1) && t.getValue().equalsIgnoreCase(tagValue1))
@@ -426,7 +479,11 @@ public class UserController
        andOr.clear();
 
    }
-
+   /**
+    * Helper method for searchPhotos which switches the screen to the screen 
+    * to the search screen. 
+    * @param photos
+    */
    private void searchPhotos(List<Photo> photos)
    {
         try{

@@ -45,6 +45,12 @@ public class SearchDisplayController {
 
     private Photo currentPhoto;
     
+    /**
+     * Once the search has been executed, this method stores the user that initiated the search
+     * and the photos that fit the search criteria
+     * @param user
+     * @param photos
+     */
     public void initUser(User user, List<Photo> photos){
         this.user = user;
         this.photos = photos;
@@ -59,6 +65,9 @@ public class SearchDisplayController {
             }
         });
     }
+    /**
+     * Allows the user to back out of the search photos screen
+     */
     @FXML
     private void onBack(){
         try{
@@ -75,6 +84,9 @@ public class SearchDisplayController {
             CommonUtil.errorGUI("Back not working");
         }
     }
+    /**
+     * Displays the photos that were searched for
+     */
     @FXML
     private void displayPhotos(){
         ObservableList<Photo> photo= FXCollections.observableArrayList();
@@ -83,6 +95,15 @@ public class SearchDisplayController {
         }
         photoListView.setItems(photo);
     }
+    /**
+     * Sets a custom cell factory for the photoListView, rendering each item with an ImageView
+     * and a Label in an HBox layout. Each cell displays a photo and its corresponding caption.
+     * 
+     * The method sets up a ListCell factory, defining the appearance and behavior of each cell.
+     * It configures the cell to display an ImageView alongside a Label in an HBox layout,
+     * with specific size settings for the ImageView. The ImageView displays the image
+     * corresponding to the photo's path, and the Label displays the caption of the photo.
+     */
     private void setPhotoListCellFactory(){
         photoListView.setCellFactory(param -> new ListCell<Photo>(){
             private ImageView imageView = new ImageView();
@@ -133,6 +154,9 @@ public class SearchDisplayController {
             }
         });
     }
+    /**
+     * Allows the user to create a new album based on the searched photos.
+     */
     @FXML
     private void onCreateAlbum()
     {
